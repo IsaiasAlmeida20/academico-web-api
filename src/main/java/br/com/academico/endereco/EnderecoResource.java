@@ -38,23 +38,43 @@ public class EnderecoResource {
     }
 
     @POST
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response inserir(Endereco endereco) {
-        return Response.status(201, MediaType.APPLICATION_JSON).build();
+        endereco.setId(10);
+        return Response
+                    .status(Response.Status.CREATED)
+                    .entity(endereco)
+                    .build();
     }
 
     @PUT
-    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response atualizar(@PathParam("id") int id) {
-        return Response.status(202, MediaType.APPLICATION_JSON).build();
+    public Response atualizar(Endereco endereco) {
+        return Response
+                    .status(Response.Status.NO_CONTENT)
+                    .build();
     }
 
     @DELETE
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response deletar(@PathParam("id") int id) {
-        return Response.status(204, MediaType.APPLICATION_JSON).build();
+        return Response 
+                    .status(Response.Status.NO_CONTENT)
+                    .build();
+    }
+
+    @PUT
+    @Path("{id}/{status}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response atualizarStatus(@PathParam("id") int id, String status) {
+        endereco = new Endereco();
+        endereco.setId(id);
+        endereco.setStatus(EnderecoEnum.fromString(status));
+        return Response
+                    .status(Response.Status.OK)
+                    .entity(endereco)
+                    .build();
     }
     
 }

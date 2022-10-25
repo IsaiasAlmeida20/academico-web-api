@@ -39,22 +39,29 @@ public class DisciplinaResource {
     }
 
     @POST
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response inserir(Disciplina disciplina) {
-        return Response.status(201, MediaType.APPLICATION_JSON).build();
+        disciplina.setId(10);
+        return Response
+                    .status(Response.Status.CREATED)
+                    .entity(disciplina)
+                    .build();
     }
 
     @PUT
-    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response atualizar(@PathParam("id") int id) {
-        return Response.status(202, MediaType.APPLICATION_JSON).build();
+    public Response atualizar(Disciplina disciplina) {
+        return Response
+                    .status(Response.Status.NO_CONTENT)
+                    .build();
     }
 
     @DELETE
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response deletar(@PathParam("id") int id) {
-        return Response.status(204, MediaType.APPLICATION_JSON).build();
+        return Response
+                    .status(Response.Status.NO_CONTENT)
+                    .build();
     }
 }

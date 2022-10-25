@@ -1,3 +1,49 @@
-# GET Http://localhost:8080/academico-web-api/enderecos/23
+@path = localhost
 
-GET Http://localhost:8080/academico-web-api/disciplinas/3
+@port = 8080
+
+@pathproject = academico-web-api
+
+
+### Lista todos os enderecos
+GET Http://{{path}}:{{port}}/{{pathproject}}/enderecos
+
+### Busca um endereco especifico por ID
+GET Http://{{path}}:{{port}}/{{pathproject}}/enderecos/3
+
+### Cria um endereco
+POST Http://{{path}}:{{port}}/{{pathproject}}/enderecos
+Content-Type: application/json
+
+{
+    "CEP": 49300000,
+    "bairro": "Macaé",
+    "cidade": "Tobias Barreto",
+    "estado": "SE",
+    "rua": "Rua a",
+    "status": "ATIVADO"
+},
+
+### Atualiza um endereco
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos
+Content-Type: application/json
+
+{
+    "id": 10,
+    "CEP": 49300000,
+    "bairro": "Centro",
+    "cidade": "Tobias Barreto",
+    "estado": "SE",
+    "rua": "Rua a",
+    "status": "DESATIVADO"
+},
+
+
+### Deletar um endereco por ID
+DELETE Http://{{path}}:{{port}}/{{pathproject}}/enderecos/3
+
+### Atualizar Status do endereco(ATIVADO/DESATIVADO)
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos/10/status
+Content-Type: text/plain
+
+ATIVADO

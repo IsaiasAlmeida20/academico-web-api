@@ -5,11 +5,14 @@ import java.io.Serializable;
 public class Endereco implements Serializable {
 
     private int id;
+    
     private int CEP;
     private String rua;
     private String bairro;
     private String cidade;
     private String estado;
+
+    private EnderecoEnum status;
 
     public int getId() {
         return id;
@@ -59,6 +62,15 @@ public class Endereco implements Serializable {
         this.estado = estado;
     }
 
+    public EnderecoEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(EnderecoEnum status) {
+        this.status = status;
+    }
+
+
     public Endereco() {
     }
 
@@ -68,6 +80,7 @@ public class Endereco implements Serializable {
         this.bairro = bairro;
         this.cidade = cidade;
         this.estado = estado;
+        this.status = EnderecoEnum.ATIVADO;
     }
 
     @Override
@@ -79,6 +92,7 @@ public class Endereco implements Serializable {
 		detalhes += "Bairro: " + this.getBairro() + " \n";
 		detalhes += "Cidade: " + this.getCidade() + " \n";
 		detalhes += "Estado: " + this.getEstado() + " \n";
+        detalhes += "Status: " + this.getStatus() + " \n";
 		return detalhes;
     }
 
