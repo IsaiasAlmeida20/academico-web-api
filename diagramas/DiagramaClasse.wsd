@@ -1,5 +1,10 @@
 @startuml Academico
 
+    enum EnderecoEnum{
+        ATIVADO
+        DESATIVADO
+    }
+
     Class Endereco {
         - int id
         - int CEP
@@ -7,6 +12,7 @@
         - String bairro
         - String cidade
         - String estado
+        - EnderecoEnum status
     }
 
     abstract Class Pessoa {
@@ -104,6 +110,8 @@
     Turma o-- "1..1" Disciplina : contém >
     Turma o-- "1..30" Aluno : contém >
     Turma o-- "1..*" Sala : contém >
+
+    Endereco o-- "1..1" EnderecoEnum : contém >
 
     IProjeto <|.. Professor
     IProjeto <|.. Aluno

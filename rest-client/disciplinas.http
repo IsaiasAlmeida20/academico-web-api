@@ -5,13 +5,13 @@
 @pathproject = academico-web-api
 
 
-### Lista todos os disciplinas
+### Lista todas as disciplinas
 GET Http://{{path}}:{{port}}/{{pathproject}}/disciplinas
 
-### Busca um disciplina especifico por ID
+### Busca uma disciplina especifica por ID
 GET Http://{{path}}:{{port}}/{{pathproject}}/disciplinas/3
 
-### Cria um disciplina
+### Cria uma disciplina
 POST Http://{{path}}:{{port}}/{{pathproject}}/disciplinas
 Content-Type: application/json
 
@@ -20,16 +20,15 @@ Content-Type: application/json
     "nomeDisciplina": "Cs2"
   },
 
-### Atualiza um disciplina
-PUT  Http://{{path}}:{{port}}/{{pathproject}}/disciplinas
+### Atualiza uma disciplina
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/disciplinas/10
 Content-Type: application/json
 
   {
-    "id": 10,
     "cargaHoraria": 86,
     "nomeDisciplina": "Cs1"
   },
 
 
-### Deletar um disciplina por ID
+### Deletar uma disciplina por ID
 DELETE Http://{{path}}:{{port}}/{{pathproject}}/disciplinas/3

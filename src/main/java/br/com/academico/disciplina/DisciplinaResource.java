@@ -50,8 +50,10 @@ public class DisciplinaResource {
     }
 
     @PUT
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response atualizar(Disciplina disciplina) {
+    public Response atualizar(@PathParam("id") int id, Disciplina disciplina) {
+        disciplina.setId(id);
         return Response
                     .status(Response.Status.NO_CONTENT)
                     .build();

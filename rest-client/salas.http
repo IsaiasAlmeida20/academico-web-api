@@ -5,13 +5,13 @@
 @pathproject = academico-web-api
 
 
-### Lista todos os salas
+### Lista todas as salas
 GET Http://{{path}}:{{port}}/{{pathproject}}/salas
 
 ### Busca um sala especifico por ID
 GET Http://{{path}}:{{port}}/{{pathproject}}/salas/3
 
-### Cria um sala
+### Cria uma sala
 POST Http://{{path}}:{{port}}/{{pathproject}}/salas
 Content-Type: application/json
 
@@ -23,8 +23,8 @@ Content-Type: application/json
     "quadroBranco": true
 }
 
-### Atualiza um sala
-PUT  Http://{{path}}:{{port}}/{{pathproject}}/salas
+### Atualiza uma sala
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/salas/12
 Content-Type: application/json
 
 {
@@ -37,5 +37,5 @@ Content-Type: application/json
 },
 
 
-### Deletar um sala por ID
+### Deletar uma sala por ID
 DELETE Http://{{path}}:{{port}}/{{pathproject}}/salas/1

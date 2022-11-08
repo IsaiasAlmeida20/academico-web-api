@@ -49,9 +49,10 @@ public class SalaResource {
     }
 
     @PUT
-
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response atualizar(Sala sala) {
+    public Response atualizar(@PathParam("id") int id, Sala sala) {
+        sala.setId(id);
         return Response
                     .status(Response.Status.NO_CONTENT)
                     .build();

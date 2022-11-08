@@ -49,8 +49,10 @@ public class EnderecoResource {
     }
 
     @PUT
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response atualizar(Endereco endereco) {
+    public Response atualizar(@PathParam("id") int id, Endereco endereco) {
+        endereco.setId(id);
         return Response
                     .status(Response.Status.NO_CONTENT)
                     .build();

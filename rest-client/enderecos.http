@@ -20,22 +20,19 @@ Content-Type: application/json
     "bairro": "Macaé",
     "cidade": "Tobias Barreto",
     "estado": "SE",
-    "rua": "Rua a",
-    "status": "ATIVADO"
+    "rua": "Rua a"
 },
 
 ### Atualiza um endereco
-PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos/10
 Content-Type: application/json
 
 {
-    "id": 10,
     "CEP": 49300000,
     "bairro": "Centro",
     "cidade": "Tobias Barreto",
     "estado": "SE",
-    "rua": "Rua a",
-    "status": "DESATIVADO"
+    "rua": "Rua a"
 },
 
 
@@ -46,4 +43,4 @@ DELETE Http://{{path}}:{{port}}/{{pathproject}}/enderecos/3
 PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos/10/status
 Content-Type: text/plain
 
-ATIVADO
+ATIVO

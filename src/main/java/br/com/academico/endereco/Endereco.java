@@ -72,6 +72,7 @@ public class Endereco implements Serializable {
 
 
     public Endereco() {
+        this.status = EnderecoEnum.ATIVO;
     }
 
     public Endereco(int CEP, String rua, String bairro, String cidade, String estado) {
@@ -80,7 +81,7 @@ public class Endereco implements Serializable {
         this.bairro = bairro;
         this.cidade = cidade;
         this.estado = estado;
-        this.status = EnderecoEnum.ATIVADO;
+        this.status = EnderecoEnum.ATIVO;
     }
 
     @Override
