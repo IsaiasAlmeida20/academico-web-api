@@ -1,0 +1,66 @@
+@path = localhost
+
+@port = 8080
+
+@pathproject = academico-web-api
+
+
+### Lista todos os professores
+GET Http://{{path}}:{{port}}/{{pathproject}}/professores
+
+### Busca um professor especifico por matricula
+GET Http://{{path}}:{{port}}/{{pathproject}}/professores/2022748
+
+### Cria um professor
+POST Http://{{path}}:{{port}}/{{pathproject}}/professores
+Content-Type: application/json
+
+     {
+    "cpf": "777.777.777-77",
+    "endereco": {
+      "CEP": 49300000,
+      "bairro": "Centro",
+      "cidade": "Tobias",
+      "estado": "SE",
+      "id": 0,
+      "rua": "Rua A",
+      "status": "ATIVO"
+    },
+    "idade": 34,
+    "matricula": 66721143,
+    "naturalidade": "BA",
+    "nome": "Jose",
+    "nomeCompleto": "Jose Silva",
+    "sexo": "M",
+    "sobrenome": "Silva",
+    "cargaHoraria": 40,
+    "salario": 5.0
+  }
+
+### Atualiza um professor
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/professores/2022748
+Content-Type: application/json
+
+  {
+    "cpf": "777.777.777-77",
+    "endereco": {
+      "CEP": 49300000,
+      "bairro": "Centro",
+      "cidade": "Tobias",
+      "estado": "SE",
+      "id": 0,
+      "rua": "Rua A",
+      "status": "ATIVO"
+    },
+    "idade": 34,
+    "naturalidade": "BA",
+    "nome": "Jose",
+    "nomeCompleto": "Jose Silva",
+    "sexo": "M",
+    "sobrenome": "Silva",
+    "cargaHoraria": 40,
+    "salario": 5.0
+  }
+
+### Deletar um professor por matricula
+DELETE Http://{{path}}:{{port}}/{{pathproject}}/professores/2022748

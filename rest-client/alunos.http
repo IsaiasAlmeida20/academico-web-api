@@ -1,0 +1,118 @@
+@path = localhost
+
+@port = 8080
+
+@pathproject = academico-web-api
+
+
+### Lista todos os alunos
+GET Http://{{path}}:{{port}}/{{pathproject}}/alunos
+
+### Busca um aluno especifico por matricula
+GET Http://{{path}}:{{port}}/{{pathproject}}/alunos/2022748
+
+### Cria um aluno
+POST Http://{{path}}:{{port}}/{{pathproject}}/alunos
+Content-Type: application/json
+
+    {
+        "cpf": "999.999.999-88",
+        "endereco": {
+        "CEP": 49400000,
+        "bairro": "Centro",
+        "cidade": "Lagarto",
+        "estado": "BA",
+        "id": 0,
+        "rua": "Rua B",
+        "status": "ATIVO"
+        },
+        "idade": 20,
+        "matricula": 20228113,
+        "naturalidade": "SE",
+        "nome": "Joãozinho",
+        "nomeCompleto": "Joãozinho petorto",
+        "sexo": "M",
+        "sobrenome": "petorto",
+        "aprovado": true,
+        "curso": "Informatica",
+        "estaMatriculado": true,
+        "media": 9.0,
+        "mediaPonderada": 9.0,
+        "notas": [
+        {
+            "id": 0,
+            "matricula": 0,
+            "peso": 1,
+            "valor": 8.0
+        },
+        {
+            "id": 0,
+            "matricula": 0,
+            "peso": 1,
+            "valor": 10.0
+        },
+        {
+            "id": 0,
+            "matricula": 0,
+            "peso": 1,
+            "valor": 9.0
+        }
+        ],
+        "situacao": "Aprovado"
+    },
+
+### Atualiza um aluno
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/alunos/2022748
+Content-Type: application/json
+
+ {
+        "cpf": "999.999.999-88",
+        "endereco": {
+        "CEP": 49400000,
+        "bairro": "Centro",
+        "cidade": "Lagarto",
+        "estado": "BA",
+        "id": 0,
+        "rua": "Rua B",
+        "status": "ATIVO"
+        },
+        "idade": 20,
+        "naturalidade": "SE",
+        "nome": "Joãozinho",
+        "nomeCompleto": "Joãozinho petorto",
+        "sexo": "M",
+        "sobrenome": "petorto",
+        "aprovado": true,
+        "curso": "Informatica",
+        "estaMatriculado": true,
+        "media": 9.0,
+        "mediaPonderada": 9.0,
+        "notas": [
+        {
+            "id": 0,
+            "matricula": 0,
+            "peso": 1,
+            "valor": 8.0
+        },
+        {
+            "id": 0,
+            "matricula": 0,
+            "peso": 1,
+            "valor": 10.0
+        },
+        {
+            "id": 0,
+            "matricula": 0,
+            "peso": 1,
+            "valor": 9.0
+        }
+        ],
+        "situacao": "Aprovado"
+    },
+
+### Deletar um aluno por matricula
+DELETE Http://{{path}}:{{port}}/{{pathproject}}/alunos/2022748
+
+
+### Busca um aluno especifico por matricula
+GET Http://{{path}}:{{port}}/{{pathproject}}/alunos/2022748/notas/
