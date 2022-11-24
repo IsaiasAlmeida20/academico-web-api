@@ -15,14 +15,21 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import br.com.academico.endereco.Endereco;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Path("/professores")
+@Tag(name = "Professor")
 public class ProfessorResource {
 
     private Professor professor;
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Listar Professores",
+        description = "Recupera uma lista completa de professores com todos os dados"
+    )
     public Response recuperar() {
         List<Professor> listProfessores = new ArrayList<Professor>();
         Professor p1 = new Professor("Jose", "Silva", 34, "BA", 'M', "777.777.777-77", 5.000, 40);
@@ -37,6 +44,10 @@ public class ProfessorResource {
     @GET
     @Path("/{matricula}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Recuperar Professor",
+        description = "Recupera apenas um professor a partir da sua matricula"
+    )
     public Response recuperarMatricula(@PathParam("matricula") int matricula) {
         professor = new Professor("Jose", "Silva", 34, "BA", 'M', "777.777.777-77", 5.000, 40);
         professor.setMatricula(matricula);
@@ -46,6 +57,10 @@ public class ProfessorResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Criar Professor",
+        description = "Cria um professor completo"
+    )
     public Response inserir(Professor professor) {
         professor.setMatricula(20221998);
         return Response
@@ -57,6 +72,10 @@ public class ProfessorResource {
     @PUT
     @Path("/{matricula}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Atualiza um professor",
+        description = "Atualiza um professor"
+    )
     public Response atualizar(@PathParam("matricula") int matricula, Professor professor) {
         professor.setMatricula(20221998);
         return Response
@@ -66,6 +85,10 @@ public class ProfessorResource {
 
     @DELETE
     @Path("/{matricula}")
+    @Operation(
+        summary = "Deletar professor",
+        description = "Deleta apenas um professor a partir da sua matricula"
+    )
     public Response deletar(@PathParam("matricula") int matricula) {
         return Response
                     .status(Response.Status.NO_CONTENT)

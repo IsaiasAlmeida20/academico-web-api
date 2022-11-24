@@ -15,15 +15,22 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import br.com.academico.endereco.Endereco;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @Path("/alunos")
+@Tag(name = "Aluno")
 public class AlunoResource {
     
     private Aluno aluno;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Listar Alunos",
+        description = "Recupera uma lista completa de alunos com todos os dados"
+    )
     public Response recuperar() {
         List<Aluno> listAlunos = new ArrayList<Aluno>();
         Aluno a1 = new Aluno("Isaias", "Almeida", 24, "SE", 'M', "999.999.999-99", "Informatica", true);
@@ -51,6 +58,10 @@ public class AlunoResource {
     @GET
     @Path("/{matricula}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Recuperar Aluno",
+        description = "Recupera apenas um aluno a partir do sua matricula"
+    )
     public Response recuperarMatricula(@PathParam("matricula") int matricula) {
         aluno = new Aluno("Isaias", "Almeida", 24, "SE", 'M', "999.999.999-99", "Informatica", true);
         aluno.setMatricula(matricula);
@@ -60,6 +71,10 @@ public class AlunoResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Criar Aluno",
+        description = "Cria um aluno completo"
+    )
     public Response inserir(Aluno aluno) {
         aluno.setMatricula(20221998);
         return Response
@@ -71,6 +86,10 @@ public class AlunoResource {
     @PUT
     @Path("/{matricula}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Atualiza um aluno",
+        description = "Atualiza um aluno"
+    )
     public Response atualizar(@PathParam("matricula") int matricula, Aluno aluno) {
         aluno.setMatricula(20221998);
         return Response
@@ -80,6 +99,10 @@ public class AlunoResource {
 
     @DELETE
     @Path("/{matricula}")
+    @Operation(
+        summary = "Deletar aluno",
+        description = "Deleta apenas um aluno a partir do sua matricula"
+    )
     public Response deletar(@PathParam("matricula") int matricula) {
         return Response
                     .status(Response.Status.NO_CONTENT)
@@ -90,6 +113,10 @@ public class AlunoResource {
     @GET
     @Produces
     @Path("{matricula}/notas")
+    @Operation(
+        summary = "Lista Notas",
+        description = "Recupera uma lista com todas as notas do aluno"
+    )
     public Response recuperarNotasPorMatricula(@PathParam("matricula") int matricula) {
         Nota n1 = new Nota(8, 1);
         Nota n2 = new Nota(10, 1);

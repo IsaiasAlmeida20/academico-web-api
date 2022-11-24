@@ -14,13 +14,21 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @Path("/disciplinas")
+@Tag(name = "Disciplina")
 public class DisciplinaResource {
     
     private Disciplina disciplina;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Listar Disciplinas",
+        description = "Recupera uma lista completa de disciplinas com todos os dados"
+    )
     public Response recuperar() {
         List<Disciplina> listDisciplinas = new ArrayList<Disciplina>();
         listDisciplinas.add(new Disciplina("Cs1", 86));
@@ -32,6 +40,10 @@ public class DisciplinaResource {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Recuperar Disciplina",
+        description = "Recupera apenas uma disciplina a partir do seu id"
+    )
     public Response recuperarId(@PathParam("id") int id) {
         disciplina = new Disciplina("Progarmação 1", 101);
         disciplina.setId(id);
@@ -41,6 +53,10 @@ public class DisciplinaResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Criar uma displina",
+        description = "Criar uma disciplina completa"
+    )
     public Response inserir(Disciplina disciplina) {
         disciplina.setId(10);
         return Response
@@ -52,6 +68,10 @@ public class DisciplinaResource {
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Atualiza uma disciplina",
+        description = "Atualiza uma disciplina"
+    )
     public Response atualizar(@PathParam("id") int id, Disciplina disciplina) {
         disciplina.setId(id);
         return Response
@@ -61,6 +81,10 @@ public class DisciplinaResource {
 
     @DELETE
     @Path("/{id}")
+    @Operation(
+        summary = "Deletar disciplina",
+        description = "Deleta apenas uma disciplina a partir do seu id"
+    )
     public Response deletar(@PathParam("id") int id) {
         return Response
                     .status(Response.Status.NO_CONTENT)
