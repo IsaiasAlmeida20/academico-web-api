@@ -15,9 +15,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.TestProperties;
 import org.junit.Test;
+
+import br.com.academico.config.AutoScanIoCFeature;
+import br.com.academico.exception.AcademicoExceptionMapper;
 
 public class DisciplinaResourceTest extends JerseyTest {
 
@@ -25,7 +29,10 @@ public class DisciplinaResourceTest extends JerseyTest {
 	protected Application configure() {
 		enable(TestProperties.LOG_TRAFFIC);
 		enable(TestProperties.DUMP_ENTITY);
-		return new ResourceConfig(DisciplinaResource.class);
+		return new ResourceConfig(DisciplinaResource.class)
+            .property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true)
+            .register(AcademicoExceptionMapper.class)
+            .register(AutoScanIoCFeature.class);
 	}
 
     @Test
@@ -33,16 +40,16 @@ public class DisciplinaResourceTest extends JerseyTest {
 
         Response response = target("/disciplinas").request().get();
 
-        List<Disciplina> listDisciplinas = response.readEntity(new GenericType<List<Disciplina>>() {});
+        List<Disciplina> listDisciplina = response.readEntity(new GenericType<List<Disciplina>>() {});
 
         assertEquals("O codigo de status HTTP da resposta deve ser 200: ", Status.OK.getStatusCode(), response.getStatus());
         assertEquals("O tipo de conteúdo HTTP da resposta deve ser JSON: ", MediaType.APPLICATION_JSON, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
-        assertTrue("O conteúdo da resposta deve ser uma lista: ", listDisciplinas instanceof List<?> );
+        assertTrue("O conteúdo da resposta deve ser uma lista: ", listDisciplina instanceof List<?>);
     }
 
     @Test
     public void test_recuperar_disciplina_por_id() {
-        Response response = target("/disciplinas/999").request().get();
+        Response response = target("/disciplinas/123").request().get();
         Disciplina disciplina = response.readEntity(new GenericType<Disciplina>() {});
 
         assertEquals("O codigo de status HTTP da resposta deve ser 200: ", Status.OK.getStatusCode(), response.getStatus());
@@ -53,7 +60,7 @@ public class DisciplinaResourceTest extends JerseyTest {
     @Test
     public void teste_criar_disciplina() {
         String disciplinaJSON = Json.createObjectBuilder()
-            .add("nomeDisciplina", "Programação")
+            .add("nomeDisciplina", "0000-PROGRAMACAO")
             .add("cargaHoraria", 200)
             .build()
             .toString();
@@ -83,8 +90,25 @@ public class DisciplinaResourceTest extends JerseyTest {
 
     @Test
     public void teste_deletar_disciplina_por_id() {
-        Response response = target("/disciplinas/133").request().delete();
+        Response response = target("/disciplinas/1").request().delete();
 
         assertEquals("O codigo de status HTTP da resposta deve ser 204: ", Status.NO_CONTENT.getStatusCode(), response.getStatus());
     }
+
+    @Test
+    public void teste_criar_disciplina_com_nome_invalido() {
+        String disciplinaJSON = Json.createObjectBuilder()
+            .add("nomeDisciplina", "Programação")
+            .add("cargaHoraria", 203)
+            .build()
+            .toString();
+
+        Response response = target("/disciplinas").request().post(Entity.json(disciplinaJSON));
+        String msg = response.readEntity(String.class);
+
+        assertEquals("O codigo de status HTTP da resposta deve ser 422: ", 422, response.getStatus());
+        assertEquals("O tipo de conteúdo HTTP da resposta deve ser texto plano: ", MediaType.TEXT_PLAIN, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
+        assertTrue("O conteúdo da resposta deve conter uma mensagem de validação pré-definida: ", msg.contains("O atributo nome da disciplina é inválido."));
+    }
+
 }

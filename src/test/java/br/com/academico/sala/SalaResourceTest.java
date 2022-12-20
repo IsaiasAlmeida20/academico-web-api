@@ -15,9 +15,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.TestProperties;
 import org.junit.Test;
+
+import br.com.academico.config.AutoScanIoCFeature;
+import br.com.academico.exception.AcademicoExceptionMapper;
 
 public class SalaResourceTest extends JerseyTest{
     
@@ -25,7 +29,10 @@ public class SalaResourceTest extends JerseyTest{
 	protected Application configure() {
 		enable(TestProperties.LOG_TRAFFIC);
 		enable(TestProperties.DUMP_ENTITY);
-		return new ResourceConfig(SalaResource.class);
+		return new ResourceConfig(SalaResource.class)
+            .property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, SalaResource.class)
+            .register(AcademicoExceptionMapper.class)
+            .register(AutoScanIoCFeature.class);
 	}
 
     @Test
@@ -42,7 +49,7 @@ public class SalaResourceTest extends JerseyTest{
     
     @Test
     public void test_recuperar_sala_por_id() {
-        Response response = target("/salas/999").request().get();
+        Response response = target("/salas/123").request().get();
         Sala sala = response.readEntity(new GenericType<Sala>() {});
 
         assertEquals("O codigo de status HTTP da resposta deve ser 200: ", Status.OK.getStatusCode(), response.getStatus());

@@ -1,5 +1,9 @@
-c:\Users\LAB\Desktop\projeto-academico\academico-web-api\src\test\java\br\com\academico\aluno\AlunoResourceTest.java
-c:\Users\LAB\Desktop\projeto-academico\academico-web-api\src\test\java\br\com\academico\professor\ProfessorResourceTest.java
-c:\Users\LAB\Desktop\projeto-academico\academico-web-api\src\test\java\br\com\academico\sala\SalaResourceTest.java
-c:\Users\LAB\Desktop\projeto-academico\academico-web-api\src\test\java\br\com\academico\endereco\EnderecoResourceTest.java
-c:\Users\LAB\Desktop\projeto-academico\academico-web-api\src\test\java\br\com\academico\disciplina\DisciplinaResourceTest.java
+c:\Projetos\academico-web-api\src\test\java\br\com\academico\sala\SalaResourceTest.java
+c:\Projetos\academico-web-api\src\test\java\br\com\academico\aluno\AlunoResourceTest.java
+c:\Projetos\academico-web-api\src\test\java\br\com\academico\disciplina\DisciplinaResourceTest.java
+c:\Projetos\academico-web-api\src\test\java\br\com\academico\professor\ProfessorResourceTest.java
+c:\Projetos\academico-web-api\src\test\java\br\com\academico\disciplina\DisciplinaServiceTest.java
+c:\Projetos\academico-web-api\src\test\java\br\com\academico\endereco\EnderecoResourceTest.java
+c:\Projetos\academico-web-api\src\test\java\br\com\academico\aluno\AlunoServiceTest.java
+c:\Projetos\academico-web-api\src\test\java\br\com\academico\endereco\EnderecoServiceTest.java
+c:\Projetos\academico-web-api\src\test\java\br\com\academico\sala\SalaServiceTest.java

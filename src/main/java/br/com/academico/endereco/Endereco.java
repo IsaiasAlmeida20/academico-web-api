@@ -2,11 +2,20 @@ package br.com.academico.endereco;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Range;
+
 public class Endereco implements Serializable {
 
     private int id;
     
+    @Range(min=10000000, max=99999999, message = "O atributo CEP deve ser inteiro e ter no mínimo 8 algarismos.")
     private int CEP;
+
+    @Size(min=5, max=50, message = "O atributo rua deve conter no mínimo 5 e no máximo 50 caracteres.")
+    @NotEmpty(message = "O atributo rua não pode ser nulo nem vazio.")
     private String rua;
     private String bairro;
     private String cidade;

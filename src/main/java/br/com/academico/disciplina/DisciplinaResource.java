@@ -3,6 +3,9 @@ package br.com.academico.disciplina;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -20,8 +23,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Path("/disciplinas")
 @Tag(name = "Disciplina")
 public class DisciplinaResource {
-    
-    private Disciplina disciplina;
+
+    @Inject
+    @Named("disciplinaservicedefaut")
+    private IDisciplinaService disciplinaService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -31,9 +36,15 @@ public class DisciplinaResource {
     )
     public Response recuperar() {
         List<Disciplina> listDisciplinas = new ArrayList<Disciplina>();
-        listDisciplinas.add(new Disciplina("Cs1", 86));
-        listDisciplinas.add(new Disciplina("Progarmação 1", 101));
-        listDisciplinas.add(new Disciplina("E.S", 90));
+        try {
+            listDisciplinas = disciplinaService.listar();
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response.ok(listDisciplinas, MediaType.APPLICATION_JSON).build();
     }
 
@@ -45,8 +56,16 @@ public class DisciplinaResource {
         description = "Recupera apenas uma disciplina a partir do seu id"
     )
     public Response recuperarId(@PathParam("id") int id) {
-        disciplina = new Disciplina("Progarmação 1", 101);
-        disciplina.setId(id);
+        Disciplina disciplina;
+        try {
+            disciplina = disciplinaService.recuperar(id);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response.ok(disciplina, MediaType.APPLICATION_JSON).build();
     }
 
@@ -57,8 +76,18 @@ public class DisciplinaResource {
         summary = "Criar uma displina",
         description = "Criar uma disciplina completa"
     )
-    public Response inserir(Disciplina disciplina) {
-        disciplina.setId(10);
+    public Response inserir(@Valid Disciplina disciplina) {
+        int id;
+        try {
+            id = disciplinaService.criar(disciplina);
+            disciplina.setId(id);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response
                     .status(Response.Status.CREATED)
                     .entity(disciplina)
@@ -73,7 +102,15 @@ public class DisciplinaResource {
         description = "Atualiza uma disciplina"
     )
     public Response atualizar(@PathParam("id") int id, Disciplina disciplina) {
-        disciplina.setId(id);
+        try {
+            disciplina = disciplinaService.atualizar(id, disciplina);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response
                     .status(Response.Status.NO_CONTENT)
                     .build();
@@ -86,6 +123,15 @@ public class DisciplinaResource {
         description = "Deleta apenas uma disciplina a partir do seu id"
     )
     public Response deletar(@PathParam("id") int id) {
+        try {
+            disciplinaService.deletar(id);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response
                     .status(Response.Status.NO_CONTENT)
                     .build();

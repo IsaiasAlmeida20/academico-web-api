@@ -1,11 +1,15 @@
 package br.com.academico.config;
 
 import javax.ws.rs.ApplicationPath;
+
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.ServerProperties;
 
 import br.com.academico.aluno.AlunoResource;
 import br.com.academico.disciplina.DisciplinaResource;
 import br.com.academico.endereco.EnderecoResource;
+
+import br.com.academico.exception.AcademicoExceptionMapper;
 import br.com.academico.professor.ProfessorResource;
 import br.com.academico.sala.SalaResource;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
@@ -32,6 +36,8 @@ public class AcademicoResourceConfig extends ResourceConfig {
     public AcademicoResourceConfig() {
         registrarEndPoints();
         configurarSwagger();
+        configurarValidacao();
+        configurarInversaoControle();
     }
 
     private void registrarEndPoints() {
@@ -47,5 +53,16 @@ public class AcademicoResourceConfig extends ResourceConfig {
         System.out.println("[Configurando o Swagger | OPEN API]");
         OpenApiResource openApiResource = new OpenApiResource();
         register(openApiResource);
+    }
+
+    private void configurarValidacao() {
+        System.out.println("[Configurando a Validação]");
+        property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
+        register(AcademicoExceptionMapper.class);
+    }
+
+    private void configurarInversaoControle() {
+        System.out.println("[Configurando a Inversão de controle (IoC)]");
+        register(AutoScanIoCFeature.class);
     }
 }

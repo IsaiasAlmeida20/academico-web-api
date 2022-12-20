@@ -3,6 +3,9 @@ package br.com.academico.endereco;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -26,6 +29,10 @@ public class EnderecoResource {
 
     private Endereco endereco;
 
+    @Inject
+    @Named("enderecoservicedefaut")
+    private IEnderecoService enderecoService;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
@@ -34,8 +41,15 @@ public class EnderecoResource {
     )
     public Response recuperar() {
         List<Endereco> listEnderecos = new ArrayList<Endereco>();
-        listEnderecos.add(new Endereco(49300000, "Rua a", "Macaé", "Tobias Barreto", "SE"));
-        listEnderecos.add(new Endereco(49400000, "Rua b", "Centro", "Lagarto", "SE"));
+        try {
+            listEnderecos = enderecoService.listar();
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response.ok(listEnderecos, MediaType.APPLICATION_JSON).build();
     }
 
@@ -47,8 +61,16 @@ public class EnderecoResource {
         description = "Recupera apenas um endereço a partir do seu id"
     )
     public Response recuperarId(@PathParam("id") int id) {
-        endereco = new Endereco(49300000, "Rua a", "Macaé", "Tobias Barreto", "SE");
-        endereco.setId(id);
+        Endereco endereco;
+        try {
+            endereco = enderecoService.recuperar(id);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response.ok(endereco, MediaType.APPLICATION_JSON).build();
     }
 
@@ -59,8 +81,18 @@ public class EnderecoResource {
         summary = "Criar Endereço",
         description = "Cria um endereço completo"
     )
-    public Response inserir(Endereco endereco) {
-        endereco.setId(10);
+    public Response inserir(@Valid Endereco endereco) {
+        int id;
+        try {
+            id = enderecoService.criar(endereco);
+            endereco.setId(id);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response
                     .status(Response.Status.CREATED)
                     .entity(endereco)
@@ -75,7 +107,15 @@ public class EnderecoResource {
         description = "Atualiza um endereço"
     )
     public Response atualizar(@PathParam("id") int id, Endereco endereco) {
-        endereco.setId(id);
+        try {
+            endereco = enderecoService.atualizar(id, endereco);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response
                     .status(Response.Status.NO_CONTENT)
                     .build();
@@ -88,6 +128,15 @@ public class EnderecoResource {
         description = "Deleta apenas um endereço a partir do seu id"
     )
     public Response deletar(@PathParam("id") int id) {
+        try {
+            enderecoService.deletar(id);
+        } catch (Exception e) {
+           return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response 
                     .status(Response.Status.NO_CONTENT)
                     .build();
@@ -108,9 +157,15 @@ public class EnderecoResource {
         )
     )
     public Response atualizarStatus(@PathParam("id") int id, String status) {
-        endereco = new Endereco();
-        endereco.setId(id);
-        endereco.setStatus(EnderecoEnum.fromString(status));
+        try {
+            endereco = enderecoService.mudarStatus(id, EnderecoEnum.fromString(status));
+        } catch (Exception e) {
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(e.getMessage())
+                    .type("text/plain")
+                    .build();
+        }
         return Response
                     .status(Response.Status.OK)
                     .entity(endereco)

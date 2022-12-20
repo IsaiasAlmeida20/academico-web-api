@@ -3,6 +3,8 @@ package br.com.academico.aluno;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,7 +16,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import br.com.academico.endereco.Endereco;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -22,8 +23,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Path("/alunos")
 @Tag(name = "Aluno")
 public class AlunoResource {
-    
-    private Aluno aluno;
+
+    @Inject
+    @Named("alunoservicedefaut")
+    private IAlunoService alunoService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -33,25 +36,15 @@ public class AlunoResource {
     )
     public Response recuperar() {
         List<Aluno> listAlunos = new ArrayList<Aluno>();
-        Aluno a1 = new Aluno("Isaias", "Almeida", 24, "SE", 'M', "999.999.999-99", "Informatica", true);
-        Aluno a2 = new Aluno("Joãozinho", "petorto", 20, "SE", 'M', "999.999.999-88", "Informatica", true);
-        a1.setEndereco(new Endereco(49300000, "Rua A", "Centro", "Tobias", "SE"));
-        a2.setEndereco(new Endereco(49400000, "Rua B", "Centro", "Lagarto", "BA"));
-        listAlunos.add(a2);
-        listAlunos.add(a1);
-        Nota n1 = new Nota(8, 1);
-        Nota n2 = new Nota(10, 1);
-        Nota n3 = new Nota(9, 1);
-        List<Nota> notas = new ArrayList<Nota>();
-        notas.add(n1);
-        notas.add(n2);
-        notas.add(n3);
-        a1.setNotas(notas);
-        a2.setNotas(notas);
-        a1.calcularMediaAritimetica();
-        a1.calcularMediaPonderada();
-        a2.calcularMediaAritimetica();
-        a2.calcularMediaPonderada();
+        try {
+            listAlunos = alunoService.listar();
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response.ok(listAlunos, MediaType.APPLICATION_JSON).build();
     }
 
@@ -63,8 +56,16 @@ public class AlunoResource {
         description = "Recupera apenas um aluno a partir do sua matricula"
     )
     public Response recuperarMatricula(@PathParam("matricula") int matricula) {
-        aluno = new Aluno("Isaias", "Almeida", 24, "SE", 'M', "999.999.999-99", "Informatica", true);
-        aluno.setMatricula(matricula);
+        Aluno aluno;
+        try {
+            aluno = alunoService.recuperar(matricula);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response.ok(aluno, MediaType.APPLICATION_JSON).build();
     }
 
@@ -76,7 +77,16 @@ public class AlunoResource {
         description = "Cria um aluno completo"
     )
     public Response inserir(Aluno aluno) {
-        aluno.setMatricula(20221998);
+        int matricula;
+        try {
+            matricula = alunoService.criar(aluno);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response
                     .status(Response.Status.CREATED)
                     .entity(aluno)
@@ -91,7 +101,15 @@ public class AlunoResource {
         description = "Atualiza um aluno"
     )
     public Response atualizar(@PathParam("matricula") int matricula, Aluno aluno) {
-        aluno.setMatricula(20221998);
+        try {
+            aluno =alunoService.atualizar(matricula, aluno);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response
                     .status(Response.Status.NO_CONTENT)
                     .build();
@@ -104,6 +122,15 @@ public class AlunoResource {
         description = "Deleta apenas um aluno a partir do sua matricula"
     )
     public Response deletar(@PathParam("matricula") int matricula) {
+        try {
+            alunoService.deletar(matricula);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response
                     .status(Response.Status.NO_CONTENT)
                     .build();
@@ -118,13 +145,17 @@ public class AlunoResource {
         description = "Recupera uma lista com todas as notas do aluno"
     )
     public Response recuperarNotasPorMatricula(@PathParam("matricula") int matricula) {
-        Nota n1 = new Nota(8, 1);
-        Nota n2 = new Nota(10, 1);
-        Nota n3 = new Nota(9, 1);
         List<Nota> notas = new ArrayList<Nota>();
-        notas.add(n1);
-        notas.add(n2);
-        notas.add(n3);
+        try {
+            alunoService.listarNotas(matricula);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
+
         return Response.ok(notas).build();
     }
 }

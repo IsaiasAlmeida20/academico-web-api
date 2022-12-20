@@ -3,6 +3,8 @@ package br.com.academico.sala;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -23,6 +25,10 @@ public class SalaResource {
     
     private Sala sala;
 
+    @Inject
+    @Named("salaservicedefaut")
+    private ISalaService salaService;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
@@ -31,8 +37,15 @@ public class SalaResource {
     )
     public Response recuperar() {
         List<Sala> listSalas = new ArrayList<Sala>();
-        listSalas.add(new Sala(1, 30, true, true, false));
-        listSalas.add(new Sala(2, 30, true, true, true));
+        try {
+            listSalas = salaService.listar();
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response.ok(listSalas, MediaType.APPLICATION_JSON).build();
     }
 
@@ -44,8 +57,16 @@ public class SalaResource {
         description = "Recupera apenas uma sala a partir do seu id"
     )
     public Response recuperarId(@PathParam("id") int id) {
-        sala = new Sala(3, 30, true, true, false);
-        sala.setId(id);
+        Sala sala;
+        try {
+            sala = salaService.recuperar(id);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response.ok(sala, MediaType.APPLICATION_JSON).build();
     }
 
@@ -57,7 +78,17 @@ public class SalaResource {
         description = "Cria um sala completa"
     )
     public Response inserir(Sala sala) {
-        sala.setId(2);
+        int id;
+        try {
+            id = salaService.criar(sala);
+            sala.setId(id);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response
                     .status(Response.Status.CREATED)
                     .entity(sala)
@@ -72,7 +103,15 @@ public class SalaResource {
         description = "Atualiza um sala"
     )
     public Response atualizar(@PathParam("id") int id, Sala sala) {
-        sala.setId(id);
+        try {
+            sala = salaService.atualizar(id, sala);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response
                     .status(Response.Status.NO_CONTENT)
                     .build();
@@ -85,6 +124,15 @@ public class SalaResource {
         description = "Deleta apenas uma sala a partir do seu id"
     )
     public Response deletar(@PathParam("id") int id) {
+        try {
+            salaService.deletar(id);
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response
                     .status(Response.Status.NO_CONTENT)
                     .build();

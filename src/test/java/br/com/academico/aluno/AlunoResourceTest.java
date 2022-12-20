@@ -15,9 +15,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.TestProperties;
 import org.junit.Test;
+
+import br.com.academico.config.AutoScanIoCFeature;
+import br.com.academico.exception.AcademicoExceptionMapper;
 
 public class AlunoResourceTest extends JerseyTest {
     
@@ -25,7 +29,10 @@ public class AlunoResourceTest extends JerseyTest {
 	protected Application configure() {
 		enable(TestProperties.LOG_TRAFFIC);
 		enable(TestProperties.DUMP_ENTITY);
-		return new ResourceConfig(AlunoResource.class);
+		return new ResourceConfig(AlunoResource.class)
+            .property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true)
+            .register(AcademicoExceptionMapper.class)
+            .register(AutoScanIoCFeature.class);
 	}
 
     @Test
