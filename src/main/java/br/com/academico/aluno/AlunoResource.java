@@ -102,7 +102,7 @@ public class AlunoResource {
     )
     public Response atualizar(@PathParam("matricula") int matricula, Aluno aluno) {
         try {
-            aluno =alunoService.atualizar(matricula, aluno);
+            aluno = alunoService.atualizar(matricula, aluno);
         } catch (Exception e) {
             return Response
                 .status(Response.Status.INTERNAL_SERVER_ERROR)

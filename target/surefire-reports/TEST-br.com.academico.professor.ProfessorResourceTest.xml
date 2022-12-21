@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="5" failures="0" name="br.com.academico.professor.ProfessorResourceTest" time="0.499" errors="0" skipped="0">
+<testsuite tests="5" failures="0" name="br.com.academico.professor.ProfessorResourceTest" time="0.526" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="11.0.16.1+1-LTS-1"/>
@@ -45,7 +45,7 @@
     <property name="java.class.path" value="C:\Program Files\apache-maven-3.8.6\boot\plexus-classworlds-2.6.0.jar"/>
     <property name="java.vm.specification.version" value="11"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher test -f c:\Projetos\academico-web-api\pom.xml"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher package -f c:\Projetos\academico-web-api\pom.xml"/>
     <property name="java.home" value="C:\Program Files\Java\jdk-11.0.16.1"/>
     <property name="user.language" value="pt"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
@@ -65,9 +65,9 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="br.com.academico.professor.ProfessorResourceTest" name="test_recuperar_professor_por_matricula" time="0.103"/>
-  <testcase classname="br.com.academico.professor.ProfessorResourceTest" name="teste_deletar_professor_por_id" time="0.095"/>
-  <testcase classname="br.com.academico.professor.ProfessorResourceTest" name="teste_recuperar_lista_professores" time="0.11"/>
+  <testcase classname="br.com.academico.professor.ProfessorResourceTest" name="test_recuperar_professor_por_matricula" time="0.13"/>
+  <testcase classname="br.com.academico.professor.ProfessorResourceTest" name="teste_deletar_professor_por_id" time="0.109"/>
+  <testcase classname="br.com.academico.professor.ProfessorResourceTest" name="teste_recuperar_lista_professores" time="0.097"/>
   <testcase classname="br.com.academico.professor.ProfessorResourceTest" name="teste_criar_professor" time="0.095"/>
-  <testcase classname="br.com.academico.professor.ProfessorResourceTest" name="teste_atualizar_professor_por_matricula" time="0.096"/>
+  <testcase classname="br.com.academico.professor.ProfessorResourceTest" name="teste_atualizar_professor_por_matricula" time="0.095"/>
 </testsuite>

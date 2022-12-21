@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="6" failures="0" name="br.com.academico.disciplina.DisciplinaResourceTest" time="0.873" errors="0" skipped="0">
+<testsuite tests="6" failures="0" name="br.com.academico.disciplina.DisciplinaResourceTest" time="0.749" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="11.0.16.1+1-LTS-1"/>
@@ -45,7 +45,7 @@
     <property name="java.class.path" value="C:\Program Files\apache-maven-3.8.6\boot\plexus-classworlds-2.6.0.jar"/>
     <property name="java.vm.specification.version" value="11"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher test -f c:\Projetos\academico-web-api\pom.xml"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher package -f c:\Projetos\academico-web-api\pom.xml"/>
     <property name="java.home" value="C:\Program Files\Java\jdk-11.0.16.1"/>
     <property name="user.language" value="pt"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
@@ -65,10 +65,10 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="br.com.academico.disciplina.DisciplinaResourceTest" name="teste_deletar_disciplina_por_id" time="0.147"/>
-  <testcase classname="br.com.academico.disciplina.DisciplinaResourceTest" name="teste_criar_disciplina" time="0.299"/>
-  <testcase classname="br.com.academico.disciplina.DisciplinaResourceTest" name="test_recuperar_disciplina_por_id" time="0.128"/>
-  <testcase classname="br.com.academico.disciplina.DisciplinaResourceTest" name="teste_atualizar_disciplina_por_id" time="0.093"/>
-  <testcase classname="br.com.academico.disciplina.DisciplinaResourceTest" name="teste_criar_disciplina_com_nome_invalido" time="0.11"/>
-  <testcase classname="br.com.academico.disciplina.DisciplinaResourceTest" name="teste_recuperar_lista_disciplinas" time="0.096"/>
+  <testcase classname="br.com.academico.disciplina.DisciplinaResourceTest" name="teste_deletar_disciplina_por_id" time="0.123"/>
+  <testcase classname="br.com.academico.disciplina.DisciplinaResourceTest" name="teste_criar_disciplina" time="0.158"/>
+  <testcase classname="br.com.academico.disciplina.DisciplinaResourceTest" name="test_recuperar_disciplina_por_id" time="0.126"/>
+  <testcase classname="br.com.academico.disciplina.DisciplinaResourceTest" name="teste_atualizar_disciplina_por_id" time="0.125"/>
+  <testcase classname="br.com.academico.disciplina.DisciplinaResourceTest" name="teste_criar_disciplina_com_nome_invalido" time="0.124"/>
+  <testcase classname="br.com.academico.disciplina.DisciplinaResourceTest" name="teste_recuperar_lista_disciplinas" time="0.093"/>
 </testsuite>
