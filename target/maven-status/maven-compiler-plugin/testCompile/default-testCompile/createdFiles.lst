@@ -1,3 +1,4 @@
+br\com\academico\turma\TurmaResourceTest$3.class
 br\com\academico\endereco\EnderecoResourceTest$5.class
 br\com\academico\aluno\AlunoResourceTest$4.class
 br\com\academico\sala\SalaServiceTest.class
@@ -8,9 +9,12 @@ br\com\academico\sala\SalaResourceTest$1.class
 br\com\academico\sala\SalaResourceTest$4.class
 br\com\academico\disciplina\DisciplinaServiceTest.class
 br\com\academico\endereco\EnderecoResourceTest$3.class
+br\com\academico\turma\TurmaResourceTest.class
 br\com\academico\disciplina\DisciplinaResourceTest$4.class
 br\com\academico\disciplina\DisciplinaResourceTest$2.class
+br\com\academico\professor\ProfessorSeviceTest.class
 br\com\academico\endereco\EnderecoResourceTest.class
+br\com\academico\turma\TurmaServiceTest.class
 br\com\academico\sala\SalaResourceTest$2.class
 br\com\academico\endereco\EnderecoResourceTest$1.class
 br\com\academico\professor\ProfessorResourceTest.class
@@ -18,13 +22,16 @@ br\com\academico\professor\ProfessorResourceTest$3.class
 br\com\academico\aluno\AlunoServiceTest.class
 br\com\academico\endereco\EnderecoResourceTest$4.class
 br\com\academico\professor\ProfessorResourceTest$1.class
+br\com\academico\turma\TurmaResourceTest$2.class
 br\com\academico\aluno\AlunoResourceTest$3.class
 br\com\academico\endereco\EnderecoResourceTest$2.class
 br\com\academico\disciplina\DisciplinaResourceTest.class
 br\com\academico\disciplina\DisciplinaResourceTest$3.class
 br\com\academico\sala\SalaResourceTest.class
+br\com\academico\turma\TurmaResourceTest$1.class
 br\com\academico\sala\SalaResourceTest$3.class
 br\com\academico\endereco\EnderecoServiceTest.class
 br\com\academico\disciplina\DisciplinaResourceTest$1.class
 br\com\academico\aluno\AlunoResourceTest$1.class
 br\com\academico\aluno\AlunoResourceTest.class
+br\com\academico\turma\TurmaResourceTest$4.class
