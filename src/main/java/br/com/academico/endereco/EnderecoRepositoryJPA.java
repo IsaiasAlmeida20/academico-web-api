@@ -29,8 +29,10 @@ public class EnderecoRepositoryJPA implements IEnderecoRepository {
 
 	@Override
 	public Optional<Endereco> getById(Long id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		em.getTransaction().begin();
+        Endereco endereco = em.find(Endereco.class, id);
+        em.getTransaction().commit();
+        return endereco != null ? Optional.of(endereco) : Optional.empty();
 	}
 
 	@Override
@@ -43,14 +45,17 @@ public class EnderecoRepositoryJPA implements IEnderecoRepository {
 
 	@Override
 	public Endereco update(Endereco endereco) {
-		// TODO Auto-generated method stub
-		return null;
+		em.getTransaction().begin();
+		endereco = em.merge(endereco);
+	    em.getTransaction().commit();
+        return endereco;
 	}
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		
+        em.getTransaction().begin();
+		em.remove(em.find(Endereco.class, id));
+		em.getTransaction().commit();  
 	}
 
 }

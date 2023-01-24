@@ -9,7 +9,7 @@
 		<properties>
 			<!-- Propriedades de conexão JDBC  / JPA 3.x -->
 			<property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />
-			<property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5433/academico-db" />
+			<property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/academico-db" />
 			<property name="jakarta.persistence.jdbc.user" value="postgres" />
 			<property name="jakarta.persistence.jdbc.password" value="postgres" />
 			<!-- Propriedades personalizadas do Hibernate -->
