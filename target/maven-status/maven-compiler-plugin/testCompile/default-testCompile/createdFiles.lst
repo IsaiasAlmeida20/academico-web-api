@@ -13,6 +13,7 @@ br\com\academico\turma\TurmaResourceTest.class
 br\com\academico\disciplina\DisciplinaResourceTest$4.class
 br\com\academico\disciplina\DisciplinaResourceTest$2.class
 br\com\academico\professor\ProfessorSeviceTest.class
+br\com\academico\endereco\EnderecoRepositoryTest.class
 br\com\academico\endereco\EnderecoResourceTest.class
 br\com\academico\turma\TurmaServiceTest.class
 br\com\academico\sala\SalaResourceTest$2.class

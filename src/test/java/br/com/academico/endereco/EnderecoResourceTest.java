@@ -60,7 +60,7 @@ public class EnderecoResourceTest extends JerseyTest {
     @Test
     public void teste_criar_endereco() {
         String enderecoJSON = Json.createObjectBuilder()
-            .add("CEP", 49300000)
+            .add("cep", 49300000L)
             .add("bairro", "Centro")
             .add("cidade", "Aracaju")
             .add("estado", "Sergipe")
@@ -79,7 +79,7 @@ public class EnderecoResourceTest extends JerseyTest {
     @Test
     public void teste_atualizar_endereco_por_id() {
         String enderecoJSON = Json.createObjectBuilder()
-            .add("CEP", 493000)
+            .add("cep", 493000)
             .add("bairro", "Centro")
             .add("cidade", "Tobias")
             .add("estado", "Sergipe")
@@ -116,7 +116,7 @@ public class EnderecoResourceTest extends JerseyTest {
     @Test
     public void test_criar_endereco_sem_rua() {
         String enderecoJSON = Json.createObjectBuilder()
-            .add("CEP", 49000)
+            .add("cep", 49000)
             .add("bairro", "Centro")
             .add("cidade", "Aracaju")
             .add("estado", "Sergipe")
@@ -135,7 +135,7 @@ public class EnderecoResourceTest extends JerseyTest {
     @Test
     public void teste_criar_endereco_rua_tamanho_invalido() {
         String enderecoJSON = Json.createObjectBuilder()
-            .add("CEP", 49000000)
+            .add("cep", 49000000)
             .add("bairro", "Centro")
             .add("cidade", "Aracaju")
             .add("estado", "Sergipe")
@@ -154,7 +154,7 @@ public class EnderecoResourceTest extends JerseyTest {
     @Test
     public void teste_criar_endereco_com_cep_invalido() {
         String enderecoJSON = Json.createObjectBuilder()
-            .add("CEP", 8975)
+            .add("cep", 8975L)
             .add("bairro", "Centro")
             .add("cidade", "Aracaju")
             .add("estado", "Sergipe")

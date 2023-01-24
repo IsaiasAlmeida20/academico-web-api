@@ -60,7 +60,7 @@ public class EnderecoResource {
         summary = "Recuperar Endereço",
         description = "Recupera apenas um endereço a partir do seu id"
     )
-    public Response recuperarId(@PathParam("id") int id) {
+    public Response recuperarId(@PathParam("id") Long id) {
         Endereco endereco;
         try {
             endereco = enderecoService.recuperar(id);
@@ -82,7 +82,7 @@ public class EnderecoResource {
         description = "Cria um endereço completo"
     )
     public Response inserir(@Valid Endereco endereco) {
-        int id;
+        Long id;
         try {
             id = enderecoService.criar(endereco);
             endereco.setId(id);
@@ -106,7 +106,7 @@ public class EnderecoResource {
         summary = "Atualiza um endereço",
         description = "Atualiza um endereço"
     )
-    public Response atualizar(@PathParam("id") int id, Endereco endereco) {
+    public Response atualizar(@PathParam("id") Long id, Endereco endereco) {
         try {
             endereco = enderecoService.atualizar(id, endereco);
         } catch (Exception e) {
@@ -127,7 +127,7 @@ public class EnderecoResource {
         summary = "Deletar endereco",
         description = "Deleta apenas um endereço a partir do seu id"
     )
-    public Response deletar(@PathParam("id") int id) {
+    public Response deletar(@PathParam("id") Long id) {
         try {
             enderecoService.deletar(id);
         } catch (Exception e) {
@@ -156,7 +156,7 @@ public class EnderecoResource {
             )
         )
     )
-    public Response atualizarStatus(@PathParam("id") int id, String status) {
+    public Response atualizarStatus(@PathParam("id") Long id, String status) {
         try {
             endereco = enderecoService.mudarStatus(id, EnderecoEnum.fromString(status));
         } catch (Exception e) {

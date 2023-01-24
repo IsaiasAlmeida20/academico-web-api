@@ -19,8 +19,8 @@ public class AlunoService implements IAlunoService{
 
         Aluno a1 = new Aluno("Isaias", "Almeida", 24, "SE", 'M', "999.999.999-99", "Informatica", true);
         Aluno a2 = new Aluno("Joãozinho", "petorto", 20, "SE", 'M', "999.999.999-88", "Informatica", true);
-        a1.setEndereco(new Endereco(49300000, "Rua A", "Centro", "Tobias", "SE"));
-        a2.setEndereco(new Endereco(49400000, "Rua B", "Centro", "Lagarto", "BA"));
+        a1.setEndereco(new Endereco(49300000L, "Rua A", "Centro", "Tobias", "SE"));
+        a2.setEndereco(new Endereco(49400000L, "Rua B", "Centro", "Lagarto", "BA"));
         listAlunos.add(a2);
         listAlunos.add(a1);
         Nota n1 = new Nota(8, 1);

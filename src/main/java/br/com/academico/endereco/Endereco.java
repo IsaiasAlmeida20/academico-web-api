@@ -7,12 +7,28 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Range;
 
-public class Endereco implements Serializable {
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
-    private int id;
+@Entity(name = "enderecos")
+@Table(name = "enderecos")
+public class Endereco implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "endereco_generator")
+	@SequenceGenerator(name = "endereco_generator", sequenceName = "public.enderecos_id_seq", allocationSize = 1)
+    private Long id;
     
     @Range(min=10000000, max=99999999, message = "O atributo CEP deve ser inteiro e ter no mínimo 8 algarismos.")
-    private int CEP;
+    private Long cep;
 
     @Size(min=5, max=50, message = "O atributo rua deve conter no mínimo 5 e no máximo 50 caracteres.")
     @NotEmpty(message = "O atributo rua não pode ser nulo nem vazio.")
@@ -21,22 +37,24 @@ public class Endereco implements Serializable {
     private String cidade;
     private String estado;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10)
     private EnderecoEnum status;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getCEP() {
-        return CEP;
+    public Long getCep() {
+        return cep;
     }
 
-    public void setCEP(int cEP) {
-        CEP = cEP;
+    public void setCep(Long cep) {
+        this.cep = cep;
     }
 
     public String getRua() {
@@ -84,20 +102,29 @@ public class Endereco implements Serializable {
         this.status = EnderecoEnum.ATIVO;
     }
 
-    public Endereco(int CEP, String rua, String bairro, String cidade, String estado) {
-        this.CEP = CEP;
+    public Endereco(Long cep, String rua, String bairro, String cidade, String estado) {
+        this.cep = cep;
         this.rua = rua;
         this.bairro = bairro;
         this.cidade = cidade;
         this.estado = estado;
         this.status = EnderecoEnum.ATIVO;
     }
+    
+    public Endereco(Long cep, String rua, String bairro, String cidade, String estado, EnderecoEnum status) {
+    	this.cep = cep;
+    	this.rua = rua;
+    	this.bairro = bairro;
+    	this.cidade = cidade;
+    	this.estado = estado;
+    	this.status = status;
+    }
 
     @Override
     public String toString() {
         String detalhes = "";
         detalhes += "Id: " + this.getId() + " \n";
-		detalhes += "CEP: " + this.getCEP() + " \n";
+		detalhes += "CEP: " + this.getCep() + " \n";
 		detalhes += "Rua: " + this.getRua() + " \n";
 		detalhes += "Bairro: " + this.getBairro() + " \n";
 		detalhes += "Cidade: " + this.getCidade() + " \n";

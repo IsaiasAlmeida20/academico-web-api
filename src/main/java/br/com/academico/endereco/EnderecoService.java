@@ -13,15 +13,15 @@ public class EnderecoService implements IEnderecoService{
     
     public List<Endereco> listar() {
         List<Endereco> listEnderecos = new ArrayList<Endereco>();
-        listEnderecos.add(new Endereco(49300000, "Rua a", "Macaé", "Tobias Barreto", "SE"));
-        listEnderecos.add(new Endereco(49400000, "Rua b", "Centro", "Lagarto", "SE"));
+        listEnderecos.add(new Endereco(49300000L, "Rua a", "Macaé", "Tobias Barreto", "SE"));
+        listEnderecos.add(new Endereco(49400000L, "Rua b", "Centro", "Lagarto", "SE"));
         return listEnderecos;
     }
 
-    public Endereco recuperar(int id) {
+    public Endereco recuperar(Long id) {
         Endereco endereco;
-        if(id != 999) {
-            endereco = new Endereco(49300000, "Rua a", "Macaé", "Tobias Barreto", "SE");
+        if(id != 999L) {
+            endereco = new Endereco(49300000L, "Rua a", "Macaé", "Tobias Barreto", "SE");
             endereco.setId(id);
         }else {
             throw new EnderecoNaoExisteException();
@@ -29,17 +29,17 @@ public class EnderecoService implements IEnderecoService{
         return endereco;
     }
 
-    public int criar(Endereco endereco) {
-        if(endereco.getCEP() != 88888) {
-            endereco.setId(200);
+    public Long criar(Endereco endereco) {
+        if(endereco.getCep() != 88888L) {
+            endereco.setId(200L);
         }else {
             throw new CEPEnderecoInvalidoException();
         }
         return endereco.getId();
     }
 
-    public Endereco atualizar(int id, Endereco endereco) {
-        if(id != 999) {
+    public Endereco atualizar(Long id, Endereco endereco) {
+        if(id != 999L) {
             endereco.setId(id);
             endereco.setRua("Rua Nova");
         }else {
@@ -48,11 +48,11 @@ public class EnderecoService implements IEnderecoService{
         return endereco;
     }
 
-    public int deletar(int id) {
+    public Long deletar(Long id) {
         return id;
     }
 
-    public Endereco mudarStatus(int id, EnderecoEnum status) {
+    public Endereco mudarStatus(Long id, EnderecoEnum status) {
         Endereco endereco = new Endereco();
         endereco.setId(id);
         endereco.setStatus(status);

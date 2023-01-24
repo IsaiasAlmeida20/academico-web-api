@@ -18,8 +18,8 @@ public class ProfessorService implements IProfessorService {
         List<Professor> listProfessores = new ArrayList<Professor>();
         Professor p1 = new Professor("Jose", "Silva", 34, "BA", 'M', "777.777.777-77", 5.000, 40);
         Professor p2 = new Professor("Joao", "Barros", 44, "SE", 'M', "777.555.777-77", 5.700, 42);
-        p1.setEndereco(new Endereco(49300000, "Rua A", "Centro", "Tobias", "SE"));
-        p2.setEndereco(new Endereco(49400000, "Rua B", "Centro", "Lagarto", "BA"));
+        p1.setEndereco(new Endereco(49300000L, "Rua A", "Centro", "Tobias", "SE"));
+        p2.setEndereco(new Endereco(49400000L, "Rua B", "Centro", "Lagarto", "BA"));
         listProfessores.add(p2);
         listProfessores.add(p1);
 

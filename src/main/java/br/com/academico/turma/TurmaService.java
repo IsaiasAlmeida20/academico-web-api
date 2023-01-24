@@ -23,7 +23,7 @@ public class TurmaService implements ITurmaService{
 
         Turma turma = new Turma("Informatica", "Primeiro");
 
-        Endereco endereco = new Endereco(49300000, "Rua a", "Macaé", "Tobias Barreto", "SE");
+        Endereco endereco = new Endereco(49300000L, "Rua a", "Macaé", "Tobias Barreto", "SE");
 
         Disciplina disciplina = new Disciplina("PROGRAMACAO", 100);
 

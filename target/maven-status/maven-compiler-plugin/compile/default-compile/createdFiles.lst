@@ -20,12 +20,14 @@ br\com\academico\professor\ProfessorNaoExisteException.class
 br\com\academico\disciplina\DisciplinaResource.class
 br\com\academico\pessoa\Pessoa.class
 br\com\academico\aluno\Aluno.class
+br\com\academico\endereco\EnderecoRepositoryJPA.class
 br\com\academico\MyResource.class
 br\com\academico\professor\ProfessorService.class
 META-INF\hk2-locator\default
 br\com\academico\professor\MatriculaProfessorInvalidoException.class
 br\com\academico\endereco\EnderecoException.class
 br\com\academico\sala\Sala.class
+br\com\academico\endereco\IEnderecoRepository.class
 br\com\academico\sala\SalaService.class
 br\com\academico\aluno\MatriculaAlunoInvalidoException.class
 br\com\academico\aluno\IAlunoService.class
