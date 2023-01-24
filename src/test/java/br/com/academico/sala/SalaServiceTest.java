@@ -25,28 +25,28 @@ public class SalaServiceTest {
 
     @Test
     public void test_recuperar_sala_por_id() {
-        Sala sala = salaService.recuperar(10);
+        Sala sala = salaService.recuperar(10L);
         assertTrue("O retorno do método recuperar deve ser um objeto Sala: ", sala instanceof Sala);
     }
 
     @Test
     public void teste_criar_sala() {
         Sala sala = new Sala(1, 30, true,true, false);
-        int idSala = salaService.criar(sala);
-        assertTrue("O retorno do metodo criar deve ser o ID de uma Sala criado", idSala == (int)idSala);
+        Long idSala = salaService.criar(sala);
+        assertTrue("O retorno do metodo criar deve ser o ID de uma Sala criado", idSala == (Long)idSala);
     }
 
     @Test
     public void teste_atualizar_sala_por_id(){
         Sala sala = new Sala(1, 30, true,true, false);
-        Sala salaAtualizada = salaService.atualizar(16, sala);
+        Sala salaAtualizada = salaService.atualizar(16L, sala);
         assertTrue("O retorno do método atualizar deve ser um objeto Sala: ", salaAtualizada instanceof Sala);
     }
 
     @Test
     public void teste_deletar_sala_por_id(){
-        int idSalaDeletada = salaService.deletar(587);
-        assertTrue("O retorno do método deletar deve ser um ID da Sala deletada: ", idSalaDeletada == (int)idSalaDeletada);
+    	Long idSalaDeletada = salaService.deletar(587L);
+        assertTrue("O retorno do método deletar deve ser um ID da Sala deletada: ", idSalaDeletada == (Long)idSalaDeletada);
     }
     
 }

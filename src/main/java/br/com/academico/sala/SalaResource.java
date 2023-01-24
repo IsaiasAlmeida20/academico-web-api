@@ -54,7 +54,7 @@ public class SalaResource {
         summary = "Recuperar Sala",
         description = "Recupera apenas uma sala a partir do seu id"
     )
-    public Response recuperarId(@PathParam("id") int id) {
+    public Response recuperarId(@PathParam("id") Long id) {
         Sala sala;
         try {
             sala = salaService.recuperar(id);
@@ -76,7 +76,7 @@ public class SalaResource {
         description = "Cria um sala completa"
     )
     public Response inserir(Sala sala) {
-        int id;
+        Long id;
         try {
             id = salaService.criar(sala);
             sala.setId(id);
@@ -100,7 +100,7 @@ public class SalaResource {
         summary = "Atualiza um sala",
         description = "Atualiza um sala"
     )
-    public Response atualizar(@PathParam("id") int id, Sala sala) {
+    public Response atualizar(@PathParam("id") Long id, Sala sala) {
         try {
             sala = salaService.atualizar(id, sala);
         } catch (Exception e) {
@@ -121,7 +121,7 @@ public class SalaResource {
         summary = "Deletar sala",
         description = "Deleta apenas uma sala a partir do seu id"
     )
-    public Response deletar(@PathParam("id") int id) {
+    public Response deletar(@PathParam("id") Long id) {
         try {
             salaService.deletar(id);
         } catch (Exception e) {

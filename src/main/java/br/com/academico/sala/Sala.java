@@ -2,69 +2,92 @@ package br.com.academico.sala;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+
+@Entity(name = "salas")
+@Table(name = "salas")
 public class Sala implements Serializable{
     private static final long serialVersionUID = 1L;
     
-	private int id;
-    private int numeroSala;
-    private int capacidadeAlunos;
-    private boolean possuiArcondicionado;
-    private boolean quadroBranco;
-    private boolean laboratorio;
+    @Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sala_generator")
+	@SequenceGenerator(name = "sala_generator", sequenceName = "public.salas_id_seq", allocationSize = 1)
+	private Long id;
+    
+    @Column(name = "numero_sala")
+    private Integer numeroSala;
+    
+    @Column(name = "capacidade_alunos")
+    private Integer capacidadeAlunos;
+    
+    @Column(name = "possui_arcondicionado")
+    private Boolean possuiArcondicionado;
+    
+    @Column(name = "quadro_branco")
+    private Boolean quadroBranco;
+    
+    @Column(name = "laboratorio")
+    private Boolean laboratorio;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getNumeroSala() {
+    public Integer getNumeroSala() {
         return numeroSala;
     }
     
-    public void setNumeroSala(int numeroSala) {
+    public void setNumeroSala(Integer numeroSala) {
         this.numeroSala = numeroSala;
     }
 
-    public int getCapacidadeAlunos() {
+    public Integer getCapacidadeAlunos() {
         return capacidadeAlunos;
     }
 
-    public void setCapacidadeAlunos(int capacidadeAlunos) {
+    public void setCapacidadeAlunos(Integer capacidadeAlunos) {
         this.capacidadeAlunos = capacidadeAlunos;
     }
 
-    public boolean isPossuiArcondicionado() {
+    public Boolean isPossuiArcondicionado() {
         return possuiArcondicionado;
     }
 
-    public void setPossuiArcondicionado(boolean possuiArcondicionado) {
+    public void setPossuiArcondicionado(Boolean possuiArcondicionado) {
         this.possuiArcondicionado = possuiArcondicionado;
     }
 
-    public boolean isQuadroBranco() {
+    public Boolean isQuadroBranco() {
         return quadroBranco;
     }
 
-    public void setQuadroBranco(boolean quadroBranco) {
+    public void setQuadroBranco(Boolean quadroBranco) {
         this.quadroBranco = quadroBranco;
     }
 
-    public boolean isLaboratorio() {
+    public Boolean isLaboratorio() {
         return laboratorio;
     }
 
-    public void setLaboratorio(boolean laboratorio) {
+    public void setLaboratorio(Boolean laboratorio) {
         this.laboratorio = laboratorio;
     }
 
     public Sala() {
     }
 
-    public Sala(int numeroSala, int capacidadeAlunos, boolean possuiArcondicionado, boolean quadroBranco,
-            boolean laboratorio) {
+    public Sala(Integer numeroSala, Integer capacidadeAlunos, Boolean possuiArcondicionado, Boolean quadroBranco,
+    		Boolean laboratorio) {
         this.numeroSala = numeroSala;
         this.capacidadeAlunos = capacidadeAlunos;
         this.possuiArcondicionado = possuiArcondicionado;

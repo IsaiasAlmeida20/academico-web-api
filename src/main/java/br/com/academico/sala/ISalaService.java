@@ -8,8 +8,8 @@ import org.jvnet.hk2.annotations.Contract;
 public interface ISalaService {
     
     public List<Sala> listar();
-    public Sala recuperar(int id);
-    public int criar(Sala sala);
-    public Sala atualizar(int id, Sala sala);
-    public int deletar(int id);
+    public Sala recuperar(Long id);
+    public Long criar(Sala sala);
+    public Sala atualizar(Long id, Sala sala);
+    public Long deletar(Long id);
 }

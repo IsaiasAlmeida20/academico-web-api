@@ -18,9 +18,9 @@ public class SalaService implements ISalaService{
         return listSalas;
     }
 
-    public Sala recuperar(int id) {
+    public Sala recuperar(Long id) {
         Sala sala;
-        if(id != 999) {
+        if(id != 999L) {
             sala = new Sala(1, 30, true, true, false);
             sala.setId(id);
         }else {
@@ -29,17 +29,17 @@ public class SalaService implements ISalaService{
         return sala;
     }
 
-    public int criar(Sala sala) {
+    public Long criar(Sala sala) {
         if(sala.getNumeroSala() != 300) {
-            sala.setId(200);
+            sala.setId(200L);
         }else {
             throw new NumeroSalaInvalidoException();
         }
         return sala.getId();
     }
 
-    public Sala atualizar(int id, Sala sala) {
-        if(id != 999) {
+    public Sala atualizar(Long id, Sala sala) {
+        if(id != 999L) {
             sala.setId(id);
             sala.setCapacidadeAlunos(35);
         }else {
@@ -48,7 +48,7 @@ public class SalaService implements ISalaService{
         return sala;
     }
 
-    public int deletar(int id) {
+    public Long deletar(Long id) {
         return id;
     }
 }
