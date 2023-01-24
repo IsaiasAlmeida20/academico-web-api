@@ -1,8 +1,9 @@
 package br.com.academico.endereco;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.jvnet.hk2.annotations.Service;
@@ -10,53 +11,57 @@ import org.jvnet.hk2.annotations.Service;
 @Service 
 @Named("enderecoservicedefaut")
 public class EnderecoService implements IEnderecoService{
+	
+	private IEnderecoRepository enderecoRepository;
+
+    @Inject
+    public EnderecoService(@Named("enderecorepositoryJPA") IEnderecoRepository enderecoRepository){
+        this.enderecoRepository = enderecoRepository;
+    }
     
     public List<Endereco> listar() {
-        List<Endereco> listEnderecos = new ArrayList<Endereco>();
-        listEnderecos.add(new Endereco(49300000L, "Rua a", "Macaé", "Tobias Barreto", "SE"));
-        listEnderecos.add(new Endereco(49400000L, "Rua b", "Centro", "Lagarto", "SE"));
-        return listEnderecos;
+    	 return enderecoRepository.findAll();
     }
 
     public Endereco recuperar(Long id) {
-        Endereco endereco;
-        if(id != 999L) {
-            endereco = new Endereco(49300000L, "Rua a", "Macaé", "Tobias Barreto", "SE");
-            endereco.setId(id);
-        }else {
-            throw new EnderecoNaoExisteException();
-        }
-        return endereco;
+    	return enderecoRepository.getById(id)
+    			.orElseThrow(() -> new EnderecoNaoExisteException());
     }
 
     public Long criar(Endereco endereco) {
-        if(endereco.getCep() != 88888L) {
-            endereco.setId(200L);
-        }else {
-            throw new CEPEnderecoInvalidoException();
-        }
-        return endereco.getId();
+    	enderecoRepository.save(endereco);
+		return endereco.getId();
     }
 
     public Endereco atualizar(Long id, Endereco endereco) {
-        if(id != 999L) {
-            endereco.setId(id);
-            endereco.setRua("Rua Nova");
-        }else {
-            throw new EnderecoNaoExisteException();
-        }
-        return endereco;
+    	return enderecoRepository.getById(id).map(e -> {
+            e.setCep(endereco.getCep());
+            e.setRua(endereco.getRua());
+            e.setBairro(endereco.getBairro());
+            e.setCidade(endereco.getCidade());
+            e.setEstado(endereco.getEstado());
+            enderecoRepository.update(e);
+            return e;
+        }).orElseThrow(() -> new EnderecoNaoExisteException());
     }
 
     public Long deletar(Long id) {
-        return id;
+    	Optional<Endereco> endereco = enderecoRepository.getById(id);
+        if (endereco.isPresent()) {
+            enderecoRepository.delete(endereco.get().getId());
+            return endereco.get().getId();
+        }
+        else{
+            throw new EnderecoNaoExisteException();
+        }
     }
 
     public Endereco mudarStatus(Long id, EnderecoEnum status) {
-        Endereco endereco = new Endereco();
-        endereco.setId(id);
-        endereco.setStatus(status);
-        return endereco;
+    	return enderecoRepository.getById(id).map(e -> {
+            e.setStatus(status);
+            enderecoRepository.update(e);
+            return e;
+        }).orElseThrow(() -> new EnderecoNaoExisteException());
     }
 
 }

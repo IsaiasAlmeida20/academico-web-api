@@ -1,9 +1,14 @@
 package br.com.academico.endereco;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.mock;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,83 +16,188 @@ import org.junit.Test;
 public class EnderecoServiceTest {
     
     private EnderecoService enderecoService;
+    
+    private IEnderecoRepository enderecoRepositoryMocked;
+    
+    private Endereco endereco;
+    
+    private Long idEndereco;
 
     @Before
     public void init() {
-        enderecoService = new EnderecoService();
+        enderecoRepositoryMocked = mock(IEnderecoRepository.class);
+        enderecoService = new EnderecoService(enderecoRepositoryMocked);
+        endereco = new Endereco(49300000L, "Rua a", "Macaé", "Tobias Barreto", "SE");
+        idEndereco = 1L;
     }
 
     @Test
     public void teste_recuperar_lista_enderecos() {
-        List<Endereco> listaEnderecos = enderecoService.listar();
-        assertTrue("O retorno do método deve ser uma lista de enderecos: ", listaEnderecos instanceof List<?>);
+
+        List<Endereco> listEnderecoEsperada;
+        listEnderecoEsperada = new ArrayList<Endereco>();
+        listEnderecoEsperada.add(endereco);
+        listEnderecoEsperada.add(endereco);
+
+        given(enderecoRepositoryMocked.findAll()).willReturn(listEnderecoEsperada);
+
+        List<Endereco> listEnderecoResposta = enderecoService.listar();
+
+        assertThat(listEnderecoResposta)
+            .withFailMessage("O retorno do método listar deve ser uma lista de endereços")
+            .isInstanceOf(List.class);
+
+        assertThat(listEnderecoResposta)
+            .withFailMessage("O retorno do método listar deve ser uma lista de endereços não nulla")
+            .isNotNull();
+
+        assertThat(listEnderecoResposta.size())
+            .withFailMessage("O retorno do método listar deve ser uma lista de endereços com dois endereços")
+            .isEqualTo(2);
+
     }
 
     @Test
     public void test_recuperar_endereco_por_id() {
-        Endereco endereco = enderecoService.recuperar(10L);
-        assertTrue("O retorno do método recuperar deve ser um objeto Endereco: ", endereco instanceof Endereco);
+    	
+    	  endereco.setId(idEndereco);
+
+          given(enderecoRepositoryMocked.getById(idEndereco)).willReturn(Optional.of(endereco));
+
+          Endereco enderecoResposta = enderecoService.recuperar(idEndereco);
+
+          assertThat(enderecoResposta)
+              .withFailMessage("O retorno do método recuperar não pode ser nullo")
+              .isNotNull();     
+
+          assertThat(enderecoResposta)
+              .withFailMessage("O retorno do método recuperar deve ser um objeto Endereco")
+              .isInstanceOf(Endereco.class);
+
     }
 
     @Test
     public void teste_criar_endereco() {
-        Endereco endereco = new Endereco(49300000L, "Rua a", "Macaé", "Tobias Barreto", "SE");
-        Long idEndereco = enderecoService.criar(endereco);
-        assertTrue("O retorno do metodo criar deve ser o ID de um Endereco criado", idEndereco == (Long)idEndereco);
+    	
+        endereco.setId(idEndereco);
+
+        given(enderecoRepositoryMocked.save(endereco)).willReturn(endereco);
+
+        Long idEnderecoSalvo = enderecoService.criar(endereco);
+
+        assertThat(idEnderecoSalvo)
+            .withFailMessage("O retorno do método criar não pode ser um ID nullo")
+            .isNotNull();   
+
+        assertThat(idEnderecoSalvo)
+            .withFailMessage("O retorno do método criar deve ser um ID de um Endereco criado")
+            .isInstanceOf(Long.class);
     }
 
     @Test
     public void teste_atualizar_endereco_por_id(){
-        Endereco endereco = new Endereco(49300000L, "Rua a", "Macaé", "Tobias Barreto", "SE");
-        Endereco enderecoAtualizado = enderecoService.atualizar(12L, endereco);
-        assertTrue("O retorno do método atualizar deve ser um objeto Endereco: ", enderecoAtualizado instanceof Endereco);
+    	
+        endereco.setId(idEndereco);
+
+        given(enderecoRepositoryMocked.getById(endereco.getId()))
+            .willReturn(Optional.of(endereco));
+
+        given(enderecoRepositoryMocked.update(endereco))
+            .willAnswer(invocation -> invocation.getArgument(0));
+
+        Endereco enderecoAtualizado = enderecoService.atualizar(endereco.getId(), endereco);
+
+        assertThat(enderecoAtualizado)
+            .withFailMessage("O retorno do método atualizar não pode ser um Endereço nullo")
+            .isNotNull();   
+
+        assertThat(enderecoAtualizado)
+            .withFailMessage("O retorno do método atualizar deve ser um objeto Endereco")
+            .isInstanceOf(Endereco.class);
     }
 
     @Test
     public void teste_deletar_endereco_por_id(){
-        Long idEnderecoDeletado = enderecoService.deletar(587L);
-        assertTrue("O retorno do método deletar deve ser um ID do Endereco deletado: ", idEnderecoDeletado == (Long)idEnderecoDeletado);
+    	
+        endereco.setId(idEndereco);
+
+        given(enderecoRepositoryMocked.getById(idEndereco))
+            .willReturn(Optional.of(endereco));
+
+        willDoNothing().given(enderecoRepositoryMocked).delete(idEndereco);
+
+        Long idEnderecoDeletado = enderecoService.deletar(idEndereco);
+
+        assertThat(idEnderecoDeletado)
+            .withFailMessage("O retorno do método deletar não pode ser um ID nullo")
+            .isNotNull();   
+
+        assertThat(idEnderecoDeletado)
+            .withFailMessage("O retorno do método deletar deve ser um ID de um Endereco deletado")
+            .isInstanceOf(Long.class);
     }
 
 
-    @Test
+	@Test
     public void teste_atlerar_status_endereco_por_id(){
-        Endereco enderecoAtualizado = enderecoService.mudarStatus(12L, EnderecoEnum.DESATIVO);
-        assertTrue("O retorno do método mudar status deve ser um objeto Endereco: ", enderecoAtualizado instanceof Endereco);
+		
+        endereco.setId(idEndereco);
+        endereco.setStatus(EnderecoEnum.ATIVO);
+
+        given(enderecoRepositoryMocked.getById(endereco.getId()))
+            .willReturn(Optional.of(endereco));
+
+        given(enderecoRepositoryMocked.update(endereco))
+            .willAnswer(invocation -> invocation.getArgument(0));
+
+        Endereco enderecoComStatusAlterado = enderecoService.mudarStatus(endereco.getId(), endereco.getStatus());
+
+        assertThat(enderecoComStatusAlterado)
+            .withFailMessage("O retorno do método mudar status não pode ser nullo")
+            .isNotNull();     
+
+        assertThat(enderecoComStatusAlterado)
+            .withFailMessage("O retorno do método mudar status deve ser um objeto Endereco")
+            .isInstanceOf(Endereco.class);
+        
     }
 
     @Test 
     public void teste_atlerar_status_endereco_por_id_inexistente() {
-        Exception exception = assertThrows(EnderecoNaoExisteException.class, () -> {
-            enderecoService.recuperar(999L);
-        });     
-        String mensagemEsperada = "O endereço não existe na base de dados.";
-        String MensagemLancada = exception.getMessage();
-        assertTrue(MensagemLancada.contains(mensagemEsperada));
-    }
+    
+        endereco.setId(idEndereco);
 
+        given(enderecoRepositoryMocked.getById(endereco.getId()))
+            .willReturn(Optional.empty());
+        Exception exception = assertThrows(EnderecoNaoExisteException.class, () -> {
+	        enderecoService.recuperar(endereco.getId());
+	    });
+
+	    assertThat(exception.getMessage())
+	        .withFailMessage("Menssagem de execeção deve ser lançada e ser compatível com a esperada")
+	        .contains("O endereço não existe na base de dados.");
+	    
+    }
+    
 
     @Test
     public void teste_atualizar_endereco_por_id_inexistente() {
-        Endereco endereco = new Endereco(49300000L, "Rua a", "Macaé", "Tobias Barreto", "SE");
+    	 Long idEndereco = 10L;
+         Endereco enderecoEnviado = new Endereco(49000000L,"Rua A", "Bairro A", "Cidade A", "Estado A");
+         enderecoEnviado.setId(idEndereco);
+
+         given(enderecoRepositoryMocked.getById(enderecoEnviado.getId()))
+             .willReturn(Optional.empty());
+
         Exception exception = assertThrows(EnderecoNaoExisteException.class, () -> {
-            enderecoService.atualizar(999L, endereco);
+        	enderecoService.atualizar(enderecoEnviado.getId(), enderecoEnviado);
         });
-        String MensagemEsperada = "O endereço não existe na base de dados.";
-        String MensagemLancada = exception.getMessage();
-        assertTrue(MensagemLancada.contains(MensagemEsperada));
+
+        assertThat(exception.getMessage())
+            .withFailMessage("Mensagem de execeção deve ser lançada e ser compatível com a esperada")
+            .contains("O endereço não existe na base de dados.");
     }
 
-    @Test
-    public void teste_criar_endereco_cep_invalido(){
-        Endereco endereco = new Endereco(88888L, "Rua H", "Centro", "Tobias Barreto", "Sergipe");
-        Exception exception = assertThrows(CEPEnderecoInvalidoException.class, () -> {
-            enderecoService.criar(endereco);
-        });     
-        String MensagemEsperada = "O CEP do endereço é inválido.";
-        String MensagemLancada = exception.getMessage();
-        assertTrue(MensagemLancada.contains(MensagemEsperada));
-    } 
 }
 
 
