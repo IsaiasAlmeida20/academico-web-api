@@ -3,8 +3,9 @@ package br.com.academico.aluno;
 import java.io.Serializable;
 
 public class Nota implements Serializable {
-
-    private int id;
+    private static final long serialVersionUID = 1L;
+    
+	private int id;
     private double valor;
     private int peso;
     private int matricula;

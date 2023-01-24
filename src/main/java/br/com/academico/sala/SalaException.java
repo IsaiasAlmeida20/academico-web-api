@@ -1,5 +1,6 @@
 package br.com.academico.sala;
 
+@SuppressWarnings("serial")
 public class SalaException extends RuntimeException{
     @Override
     public String getMessage() {
@@ -7,6 +8,7 @@ public class SalaException extends RuntimeException{
     }  
 }
 
+@SuppressWarnings("serial")
 class SalaNaoExisteException extends SalaException {
     @Override
     public String getMessage(){
@@ -14,6 +16,7 @@ class SalaNaoExisteException extends SalaException {
     }
 }
 
+@SuppressWarnings("serial")
 class NumeroSalaInvalidoException extends SalaException {
     @Override
     public String getMessage(){

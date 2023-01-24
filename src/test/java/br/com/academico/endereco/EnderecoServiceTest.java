@@ -59,7 +59,7 @@ public class EnderecoServiceTest {
     @Test 
     public void teste_atlerar_status_endereco_por_id_inexistente() {
         Exception exception = assertThrows(EnderecoNaoExisteException.class, () -> {
-            Endereco endereco = enderecoService.recuperar(999L);
+            enderecoService.recuperar(999L);
         });     
         String mensagemEsperada = "O endereço não existe na base de dados.";
         String MensagemLancada = exception.getMessage();
@@ -71,7 +71,7 @@ public class EnderecoServiceTest {
     public void teste_atualizar_endereco_por_id_inexistente() {
         Endereco endereco = new Endereco(49300000L, "Rua a", "Macaé", "Tobias Barreto", "SE");
         Exception exception = assertThrows(EnderecoNaoExisteException.class, () -> {
-            Endereco enderecoRealizado = enderecoService.atualizar(999L, endereco);
+            enderecoService.atualizar(999L, endereco);
         });
         String MensagemEsperada = "O endereço não existe na base de dados.";
         String MensagemLancada = exception.getMessage();
@@ -82,7 +82,7 @@ public class EnderecoServiceTest {
     public void teste_criar_endereco_cep_invalido(){
         Endereco endereco = new Endereco(88888L, "Rua H", "Centro", "Tobias Barreto", "Sergipe");
         Exception exception = assertThrows(CEPEnderecoInvalidoException.class, () -> {
-            Long idEndereco = enderecoService.criar(endereco);
+            enderecoService.criar(endereco);
         });     
         String MensagemEsperada = "O CEP do endereço é inválido.";
         String MensagemLancada = exception.getMessage();

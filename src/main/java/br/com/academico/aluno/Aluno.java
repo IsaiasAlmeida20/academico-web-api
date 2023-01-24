@@ -10,8 +10,9 @@ import br.com.academico.pessoa.Pessoa;
 import br.com.academico.projeto.IProjeto;
 
 public class Aluno extends Pessoa implements IProjeto, IEvento {
-
-    private String curso;
+    private static final long serialVersionUID = 1L;
+    
+	private String curso;
     private boolean estaMatriculado;
     private double media;
     private double mediaPonderada;

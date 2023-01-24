@@ -5,8 +5,9 @@ import java.io.Serializable;
 import javax.validation.constraints.Pattern;
 
 public class Disciplina implements Serializable{
+    private static final long serialVersionUID = 1L;
 
-    private int id;
+	private int id;
 
     @Pattern(regexp="[0-9]{4}-[A-Z]*", message = "O atributo nome da disciplina é inválido.")
     private String nomeDisciplina;

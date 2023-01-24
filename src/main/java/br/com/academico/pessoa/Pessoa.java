@@ -5,8 +5,9 @@ import java.io.Serializable;
 import br.com.academico.endereco.Endereco;
 
 public abstract class Pessoa implements Serializable {
-
-    private int matricula;
+    private static final long serialVersionUID = 1L;
+    
+	private int matricula;
     private String nome;
     private String sobrenome;
     private int idade;

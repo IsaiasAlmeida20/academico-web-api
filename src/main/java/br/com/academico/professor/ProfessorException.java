@@ -1,5 +1,6 @@
 package br.com.academico.professor;
 
+@SuppressWarnings("serial")
 public class ProfessorException extends RuntimeException {
     @Override
     public String getMessage() {
@@ -7,6 +8,7 @@ public class ProfessorException extends RuntimeException {
     }  
 }
 
+@SuppressWarnings("serial")
 class ProfessorNaoExisteException extends ProfessorException {
     @Override
     public String getMessage(){
@@ -14,6 +16,7 @@ class ProfessorNaoExisteException extends ProfessorException {
     }
 }
 
+@SuppressWarnings("serial")
 class MatriculaProfessorInvalidoException extends ProfessorException {
     @Override
     public String getMessage(){

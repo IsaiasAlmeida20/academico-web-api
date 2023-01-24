@@ -76,7 +76,8 @@ public class ProfessorResource {
         description = "Cria um professor completo"
     )
     public Response inserir(Professor professor) {
-        int matricula;
+        @SuppressWarnings("unused")
+		int matricula;
         try {
             matricula = professorService.criar(professor);
         } catch (Exception e) {

@@ -1,5 +1,6 @@
 package br.com.academico.aluno;
 
+@SuppressWarnings("serial")
 public class AlunoException extends RuntimeException{
     
     @Override
@@ -8,6 +9,7 @@ public class AlunoException extends RuntimeException{
     }  
 }
 
+@SuppressWarnings("serial")
 class AlunoNaoExisteException extends AlunoException {
     @Override
     public String getMessage(){
@@ -15,6 +17,7 @@ class AlunoNaoExisteException extends AlunoException {
     }
 }
 
+@SuppressWarnings("serial")
 class MatriculaAlunoInvalidoException extends AlunoException {
     @Override
     public String getMessage(){

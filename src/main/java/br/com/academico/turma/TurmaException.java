@@ -1,5 +1,6 @@
 package br.com.academico.turma;
 
+@SuppressWarnings("serial")
 public class TurmaException extends RuntimeException{
     @Override
     public String getMessage() {
@@ -7,6 +8,7 @@ public class TurmaException extends RuntimeException{
     }  
 }
 
+@SuppressWarnings("serial")
 class TurmaNaoExisteException extends TurmaException {
     @Override
     public String getMessage(){
@@ -14,6 +16,7 @@ class TurmaNaoExisteException extends TurmaException {
     }
 }
 
+@SuppressWarnings("serial")
 class NomeTurmaInvalidoException extends TurmaException {
     @Override
     public String getMessage(){

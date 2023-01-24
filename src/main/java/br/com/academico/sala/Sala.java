@@ -3,8 +3,9 @@ package br.com.academico.sala;
 import java.io.Serializable;
 
 public class Sala implements Serializable{
+    private static final long serialVersionUID = 1L;
     
-    private int id;
+	private int id;
     private int numeroSala;
     private int capacidadeAlunos;
     private boolean possuiArcondicionado;

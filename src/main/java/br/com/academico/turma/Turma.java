@@ -9,8 +9,9 @@ import br.com.academico.professor.Professor;
 import br.com.academico.sala.Sala;
 
 public class Turma implements Serializable {
-
-    private int id;
+    private static final long serialVersionUID = 1L;
+    
+	private int id;
     private String nome;
     private String periodo;
     private double mediaTurma;

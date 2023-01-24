@@ -1,5 +1,6 @@
 package br.com.academico.disciplina;
 
+@SuppressWarnings("serial")
 public class DisciplinaException extends RuntimeException{
 
     @Override
@@ -9,6 +10,7 @@ public class DisciplinaException extends RuntimeException{
     
 }
 
+@SuppressWarnings("serial")
 class DisciplinaNaoExisteException extends DisciplinaException {
     @Override
     public String getMessage(){
@@ -16,6 +18,7 @@ class DisciplinaNaoExisteException extends DisciplinaException {
     }
 }
 
+@SuppressWarnings("serial")
 class NomeDisciplinaInvalidoException extends DisciplinaException {
     @Override
     public String getMessage(){

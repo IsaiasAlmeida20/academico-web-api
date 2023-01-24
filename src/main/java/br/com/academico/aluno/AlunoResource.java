@@ -69,7 +69,7 @@ public class AlunoResource {
         return Response.ok(aluno, MediaType.APPLICATION_JSON).build();
     }
 
-    @POST
+	@POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(
@@ -77,6 +77,7 @@ public class AlunoResource {
         description = "Cria um aluno completo"
     )
     public Response inserir(Aluno aluno) {
+		 @SuppressWarnings("unused")
         int matricula;
         try {
             matricula = alunoService.criar(aluno);

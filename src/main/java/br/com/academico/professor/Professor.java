@@ -7,8 +7,9 @@ import br.com.academico.pessoa.Pessoa;
 import br.com.academico.projeto.IProjeto;
 
 public class Professor extends Pessoa implements IProjeto, IEvento {
-
-    private double salario;
+    private static final long serialVersionUID = 1L;
+    
+	private double salario;
     private int cargaHoraria;
 
     public double getSalario() {

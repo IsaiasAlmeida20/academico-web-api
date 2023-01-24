@@ -1,5 +1,6 @@
 package br.com.academico.endereco;
 
+@SuppressWarnings("serial")
 public class EnderecoException extends RuntimeException {
 
     @Override
@@ -8,6 +9,7 @@ public class EnderecoException extends RuntimeException {
     }  
 }
 
+@SuppressWarnings("serial")
 class EnderecoNaoExisteException extends EnderecoException {
     @Override
     public String getMessage(){
@@ -15,6 +17,7 @@ class EnderecoNaoExisteException extends EnderecoException {
     }
 }
 
+@SuppressWarnings("serial")
 class CEPEnderecoInvalidoException extends EnderecoException {
     @Override
     public String getMessage(){
