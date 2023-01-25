@@ -9,7 +9,7 @@ import javax.inject.Named;
 import org.jvnet.hk2.annotations.Service;
 
 @Service 
-@Named("enderecoservicedefaut")
+@Named("enderecoservicedefault")
 public class EnderecoService implements IEnderecoService{
 	
 	private IEnderecoRepository enderecoRepository;

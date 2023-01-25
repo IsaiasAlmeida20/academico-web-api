@@ -9,38 +9,38 @@
 GET Http://{{path}}:{{port}}/{{pathproject}}/enderecos
 
 ### Busca um endereco especifico por ID
-GET Http://{{path}}:{{port}}/{{pathproject}}/enderecos/3
+GET Http://{{path}}:{{port}}/{{pathproject}}/enderecos/70
 
 ### Cria um endereco
 POST Http://{{path}}:{{port}}/{{pathproject}}/enderecos
 Content-Type: application/json
 
 {
-    "CEP": 49300000,
+    "cep": 49300000,
     "bairro": "Macaé",
     "cidade": "Tobias Barreto",
     "estado": "SE",
-    "rua": "Rua a"
+    "rua": "Rua Da Feira"
 },
 
 ### Atualiza um endereco
-PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos/10
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos/70
 Content-Type: application/json
 
 {
-    "CEP": 49300000,
+    "cep": 49500000,
     "bairro": "Centro",
     "cidade": "Tobias Barreto",
     "estado": "SE",
-    "rua": "Rua a"
+    "rua": "Rua Da Ladeira"
 },
 
 
 ### Deletar um endereco por ID
-DELETE Http://{{path}}:{{port}}/{{pathproject}}/enderecos/3
+DELETE Http://{{path}}:{{port}}/{{pathproject}}/enderecos/70
 
 ### Atualizar Status do endereco(ATIVADO/DESATIVADO)
-PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos/10/status
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos/78/status
 Content-Type: text/plain
 
-ATIVO
+DESATIVO
