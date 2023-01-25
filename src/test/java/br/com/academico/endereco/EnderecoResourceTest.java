@@ -1,11 +1,12 @@
 package br.com.academico.endereco;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.json.Json;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
@@ -18,156 +19,261 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.TestProperties;
+import org.junit.Before;
 import org.junit.Test;
 
-import br.com.academico.config.AutoScanIoCFeature;
 import br.com.academico.exception.AcademicoExceptionMapper;
 
 public class EnderecoResourceTest extends JerseyTest {
+	
+	private IEnderecoService enderecoServiceMocked;
+	
+	private Endereco endereco;
+	private Long idEndereco;
+
+	@Before
+	public void init() {
+		endereco = new Endereco(49300000L, "Rua a", "Macaé", "Tobias Barreto", "SE");
+		idEndereco = 1L;
+	}
     
     @Override
 	protected Application configure() {
+    	enderecoServiceMocked = mock(IEnderecoService.class);
 		enable(TestProperties.LOG_TRAFFIC);
 		enable(TestProperties.DUMP_ENTITY);
-		return new ResourceConfig(EnderecoResource.class)
+		return new ResourceConfig()
             .property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true)
             .register(AcademicoExceptionMapper.class)
-            .register(AutoScanIoCFeature.class);
+            .register(new EnderecoResource(enderecoServiceMocked));
 	}
 
     @Test
     public void teste_recuperar_lista_enderecos() {
     
+    	List<Endereco> listEnderecoEsperada;
+        listEnderecoEsperada = new ArrayList<Endereco>();
+        listEnderecoEsperada.add(endereco);
+        listEnderecoEsperada.add(endereco);
+
+        given(enderecoServiceMocked.listar()).willReturn(listEnderecoEsperada);
+
         Response response = target("/enderecos").request().get();
+        List<Endereco> listEnderecoResposta = response.readEntity(new GenericType<List<Endereco>>() {});
 
-        List<Endereco> listEndereco = response.readEntity(new GenericType<List<Endereco>>() {});
+        assertThat(response.getStatus())
+            .withFailMessage("O codigo de status HTTP da resposta deve ser 200")
+            .isEqualTo(Status.OK.getStatusCode());  
 
-        assertEquals("O codigo de status HTTP da resposta deve ser 200: ", Status.OK.getStatusCode(), response.getStatus());
-        assertEquals("O tipo de conteúdo HTTP da resposta deve ser JSON: ", MediaType.APPLICATION_JSON, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
-        assertTrue("O conteúdo da resposta deve ser uma lista: ", listEndereco instanceof List<?> );
+        assertThat(response.getHeaderString(HttpHeaders.CONTENT_TYPE))
+            .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser JSON")
+            .isEqualTo(MediaType.APPLICATION_JSON);
+
+        assertThat(listEnderecoResposta)
+            .withFailMessage("As Listas devem ter o mesmo tamanho")
+            .hasSameSizeAs(listEnderecoEsperada);
+        
     }
     
     @Test
     public void test_recuperar_endereco_por_id() {
-        Response response = target("/enderecos/123").request().get();
-        Endereco endereco = response.readEntity(new GenericType<Endereco>() {});
+    	
+        endereco.setId(idEndereco);
+       
+        given(enderecoServiceMocked.recuperar(idEndereco)).willReturn(endereco);
 
-        assertEquals("O codigo de status HTTP da resposta deve ser 200: ", Status.OK.getStatusCode(), response.getStatus());
-        assertEquals("O tipo de conteúdo HTTP da resposta deve ser JSON: ", MediaType.APPLICATION_JSON, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
-        assertTrue("O conteúdo da resposta deve ser um Endereço: ", endereco instanceof Endereco);
+        Response response = target("/enderecos/{id}")
+            .resolveTemplate("id", idEndereco)
+            .request().get();
+
+        Endereco enderecoResposta = response.readEntity(new GenericType<Endereco>() {});
+ 
+        assertThat(response.getStatus())
+             .withFailMessage("O codigo de status HTTP da resposta deve ser 200")
+             .isEqualTo(Status.OK.getStatusCode());  
+ 
+        assertThat(response.getHeaderString(HttpHeaders.CONTENT_TYPE))
+             .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser JSON")
+             .isEqualTo(MediaType.APPLICATION_JSON);
+ 
+        assertThat(enderecoResposta)
+             .withFailMessage("O conteúdo da resposta deve ser um objeto do tipo Endereço")
+             .isInstanceOf(Endereco.class);
+        
     }
 
     @Test
     public void teste_criar_endereco() {
-        String enderecoJSON = Json.createObjectBuilder()
-            .add("cep", 49300000L)
-            .add("bairro", "Centro")
-            .add("cidade", "Aracaju")
-            .add("estado", "Sergipe")
-            .add("rua", "Rua da Feira")
-            .build()
-            .toString();
+    	
+         endereco.setId(idEndereco);
+         
+         given(enderecoServiceMocked.criar(endereco)).willReturn(idEndereco);
 
-        Response response = target("/enderecos").request().post(Entity.json(enderecoJSON));
-        Endereco endereco = response.readEntity(new GenericType<Endereco>() {});
+         Response response = target("/enderecos").request().post(Entity.json(endereco));
 
-        assertEquals("O codigo de status HTTP da resposta deve ser 201: ", Status.CREATED.getStatusCode(), response.getStatus());
-        assertEquals("O tipo de conteúdo HTTP da resposta deve ser JSON: ", MediaType.APPLICATION_JSON, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
-        assertTrue("O conteúdo da resposta deve ser um Endereço: ", endereco instanceof Endereco);
+         Endereco enderecoSalvo = response.readEntity(new GenericType<Endereco>() {});
+
+         assertThat(response.getStatus())
+             .withFailMessage("O codigo de status HTTP da resposta deve ser 201")
+             .isEqualTo(Status.CREATED.getStatusCode());  
+
+         assertThat(response.getHeaderString(HttpHeaders.CONTENT_TYPE))
+             .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser JSON")
+             .isEqualTo(MediaType.APPLICATION_JSON);
+
+         assertThat(enderecoSalvo)
+             .withFailMessage("O endereço salvo não pode ser nullo")
+             .isNotNull();   
+
+         assertThat(enderecoSalvo)
+             .withFailMessage("O conteúdo da resposta deve ser um objeto do tipo Endereço")
+             .isInstanceOf(Endereco.class);
+         
     }
 
     @Test
     public void teste_atualizar_endereco_por_id() {
-        String enderecoJSON = Json.createObjectBuilder()
-            .add("cep", 493000)
-            .add("bairro", "Centro")
-            .add("cidade", "Tobias")
-            .add("estado", "Sergipe")
-            .add("rua", "Itabaianinha")
-            .build()
-            .toString();
+    	
+        endereco.setId(idEndereco);
+         
+        given(enderecoServiceMocked.atualizar(idEndereco, endereco)).willReturn(endereco);
 
-        Response response = target("/enderecos/123").request().put(Entity.json(enderecoJSON));
+        Response response = target("/enderecos/{id}")
+            .resolveTemplate("id", idEndereco)
+            .request()
+            .put(Entity.json(endereco));
+
+        assertThat(response.getStatus())
+            .withFailMessage("codigo de status HTTP da resposta deve ser 204")
+            .isEqualTo(Status.NO_CONTENT.getStatusCode());
         
-        response.readEntity(new GenericType<Endereco>() {});
-
-        assertEquals("O codigo de status HTTP da resposta deve ser 204: ", Status.NO_CONTENT.getStatusCode(), response.getStatus());
     }
 
     @Test
     public void teste_deletar_endereco_por_id() {
-        Response response = target("/enderecos/123").request().delete();
+    	
+    	given(enderecoServiceMocked.deletar(idEndereco)).willReturn(idEndereco);
 
-        assertEquals("O codigo de status HTTP da resposta deve ser 204: ", Status.NO_CONTENT.getStatusCode(), response.getStatus());
+        Response response = target("/enderecos/{id}")
+            .resolveTemplate("id", idEndereco)
+            .request()
+            .delete();
+        
+        assertThat(response.getStatus())
+            .withFailMessage("codigo de status HTTP da resposta deve ser 204")
+            .isEqualTo(Status.NO_CONTENT.getStatusCode());
+        
     }
 
     @Test
     public void teste_atlerar_status_endereco_por_id() {
-        String status = "ATIVO";
+    	
+    	endereco.setId(idEndereco);
+        endereco.setStatus(EnderecoEnum.ATIVO);
 
-        Response response = target("/enderecos/100/status").request().put(Entity.entity(status, MediaType.TEXT_PLAIN));
-        Endereco endereco = response.readEntity(new GenericType<Endereco>() {});
+        given(enderecoServiceMocked.mudarStatus(idEndereco, endereco.getStatus())).willReturn(endereco);
 
-        assertEquals("O codigo de status HTTP da resposta deve ser 200: ", Status.OK.getStatusCode(), response.getStatus());
-        assertEquals("O tipo de conteúdo HTTP da resposta deve ser JSON: ", MediaType.APPLICATION_JSON, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
-        assertTrue("O conteúdo da resposta deve ser um Endereço: ", endereco instanceof Endereco);
+        Response response = target("/enderecos/{id}/status")
+            .resolveTemplate("id", idEndereco)
+            .request()
+            .put(Entity.entity(endereco.getStatus().toString(), MediaType.TEXT_PLAIN));
+
+        Endereco enderecoComStatusAlterado = response.readEntity(new GenericType<Endereco>() {});
+
+        assertThat(response.getStatus())
+            .withFailMessage("O codigo de status HTTP da resposta deve ser 200")
+            .isEqualTo(Status.OK.getStatusCode());
+
+        assertThat(response.getHeaderString(HttpHeaders.CONTENT_TYPE))
+            .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser JSON")
+            .isEqualTo(MediaType.APPLICATION_JSON);    
+
+        assertThat(enderecoComStatusAlterado)
+            .withFailMessage("O endereço com status alterado não pode ser nullo")
+            .isNotNull();   
+
+        assertThat(enderecoComStatusAlterado)
+            .withFailMessage("O conteúdo da resposta deve ser um objeto do tipo Endereço")
+            .isInstanceOf(Endereco.class);
+        
     }
 
     @Test
     public void test_criar_endereco_sem_rua() {
-        String enderecoJSON = Json.createObjectBuilder()
-            .add("cep", 49000)
-            .add("bairro", "Centro")
-            .add("cidade", "Aracaju")
-            .add("estado", "Sergipe")
-            .add("rua", "")
-            .build()
-            .toString();
+    	
+    	endereco.setId(idEndereco);
+    	endereco.setRua(null);
+        
+        given(enderecoServiceMocked.criar(endereco)).willReturn(idEndereco);
 
-        Response response = target("/enderecos").request().post(Entity.json(enderecoJSON));
-        String msg = response.readEntity(String.class);
+        Response response = target("/enderecos").request().post(Entity.json(endereco));
 
-        assertEquals("O codigo de status HTTP da resposta deve ser 422: ", 422, response.getStatus());
-        assertEquals("O tipo de conteudo HTTP da resposta deve ser texto plano", MediaType.TEXT_PLAIN, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
-        assertTrue("O conteudo da resposta deve conter uma mensagem de validação pre-definida: ", msg.contains("O atributo rua não pode ser nulo nem vazio."));
+        String msg = response.readEntity(String.class); 
+
+        assertThat(response.getStatus())
+            .withFailMessage("O codigo de status HTTP da resposta deve ser 422")
+            .isEqualTo(422);  
+
+        assertThat(response.getHeaderString(HttpHeaders.CONTENT_TYPE))
+            .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser texto plano")
+            .isEqualTo(MediaType.TEXT_PLAIN);
+
+        assertThat(msg)
+            .withFailMessage("O conteúdo da resposta deve conter uma mensagem de validação pré-definida")
+            .contains("O atributo rua não pode ser nulo nem vazio.");
+        
     }
 
     @Test
     public void teste_criar_endereco_rua_tamanho_invalido() {
-        String enderecoJSON = Json.createObjectBuilder()
-            .add("cep", 49000000)
-            .add("bairro", "Centro")
-            .add("cidade", "Aracaju")
-            .add("estado", "Sergipe")
-            .add("rua", "Rua")
-            .build()
-            .toString();
+    	
+    	endereco.setId(idEndereco);
+    	endereco.setRua("Rua");
+        
+        given(enderecoServiceMocked.criar(endereco)).willReturn(idEndereco);
+ 
+        Response response = target("/enderecos").request().post(Entity.json(endereco));
+ 
+        String msg = response.readEntity(String.class); 
 
-        Response response = target("/enderecos").request().post(Entity.json(enderecoJSON));
-        String msg = response.readEntity(String.class);
+        assertThat(response.getStatus())
+            .withFailMessage("O codigo de status HTTP da resposta deve ser 422")
+            .isEqualTo(422);  
 
-        assertEquals("O codigo de status HTTP da resposta deve ser 422: ", 422, response.getStatus());
-        assertEquals("O tipo de conteúdo HTTP da resposta deve ser texto plano: ", MediaType.TEXT_PLAIN, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
-        assertTrue("O conteúdo da resposta deve conter uma mensagem de validação pré-definida: ", msg.contains("O atributo rua deve conter no mínimo 5 e no máximo 50 caracteres."));
+        assertThat(response.getHeaderString(HttpHeaders.CONTENT_TYPE))
+            .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser texto plano")
+            .isEqualTo(MediaType.TEXT_PLAIN);
+
+        assertThat(msg)
+            .withFailMessage("O conteúdo da resposta deve conter uma mensagem de validação pré-definida")
+            .contains("O atributo rua deve conter no mínimo 5 e no máximo 50 caracteres."); 
+        
     }
 
     @Test
     public void teste_criar_endereco_com_cep_invalido() {
-        String enderecoJSON = Json.createObjectBuilder()
-            .add("cep", 8975L)
-            .add("bairro", "Centro")
-            .add("cidade", "Aracaju")
-            .add("estado", "Sergipe")
-            .add("rua", "Rua Treze")
-            .build()
-            .toString();
-
-        Response response = target("/enderecos").request().post(Entity.json(enderecoJSON));
-        String msg = response.readEntity(String.class);
-
-        assertEquals("O codigo de status HTTP da resposta deve ser 422: ", 422, response.getStatus());
-        assertEquals("O tipo de conteúdo HTTP da resposta deve ser texto plano: ", MediaType.TEXT_PLAIN, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
-        assertTrue("O conteúdo da resposta deve conter uma mensagem de validação pré-definida: ", msg.contains("O atributo CEP deve ser inteiro e ter no mínimo 8 algarismos."));
+    	
+    	endereco.setId(idEndereco);
+    	endereco.setCep(87776L);
+        
+        given(enderecoServiceMocked.criar(endereco)).willReturn(idEndereco);
+  
+        Response response = target("/enderecos").request().post(Entity.json(endereco));
+  
+        String msg = response.readEntity(String.class); 
+ 
+        assertThat(response.getStatus())
+            .withFailMessage("O codigo de status HTTP da resposta deve ser 422")
+            .isEqualTo(422);  
+ 
+        assertThat(response.getHeaderString(HttpHeaders.CONTENT_TYPE))
+            .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser texto plano")
+            .isEqualTo(MediaType.TEXT_PLAIN);
+ 
+        assertThat(msg)
+            .withFailMessage("O conteúdo da resposta deve conter uma mensagem de validação pré-definida")
+            .contains("O atributo CEP deve ser inteiro e ter no mínimo 8 algarismos.");
+        
     }
 
 }
