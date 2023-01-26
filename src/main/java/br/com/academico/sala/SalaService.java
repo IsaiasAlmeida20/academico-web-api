@@ -1,6 +1,5 @@
 package br.com.academico.sala;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
