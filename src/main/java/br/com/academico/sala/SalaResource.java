@@ -22,10 +22,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Path("/salas")
 @Tag(name = "Sala")
 public class SalaResource {
+
+    private ISalaService salaService;
     
     @Inject
-    @Named("salaservicedefaut")
-    private ISalaService salaService;
+    
+    public SalaResource(@Named("salaservicedefault") ISalaService salaService) {
+        this.salaService = salaService;
+    } 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

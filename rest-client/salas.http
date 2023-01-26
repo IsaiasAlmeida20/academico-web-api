@@ -9,7 +9,7 @@
 GET Http://{{path}}:{{port}}/{{pathproject}}/salas
 
 ### Busca um sala especifico por ID
-GET Http://{{path}}:{{port}}/{{pathproject}}/salas/3
+GET Http://{{path}}:{{port}}/{{pathproject}}/salas/56
 
 ### Cria uma sala
 POST Http://{{path}}:{{port}}/{{pathproject}}/salas
@@ -24,11 +24,11 @@ Content-Type: application/json
 }
 
 ### Atualiza uma sala
-PUT  Http://{{path}}:{{port}}/{{pathproject}}/salas/12
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/salas/56
 Content-Type: application/json
 
 {
-    "capacidadeAlunos": 30,
+    "capacidadeAlunos": 35,
     "id": 2,
     "laboratorio": false,
     "numeroSala": 3,
@@ -38,4 +38,4 @@ Content-Type: application/json
 
 
 ### Deletar uma sala por ID
-DELETE Http://{{path}}:{{port}}/{{pathproject}}/salas/1
+DELETE Http://{{path}}:{{port}}/{{pathproject}}/salas/56

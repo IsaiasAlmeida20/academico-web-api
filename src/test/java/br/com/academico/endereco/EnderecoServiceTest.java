@@ -2,8 +2,7 @@ package br.com.academico.endereco;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
@@ -59,7 +58,6 @@ public class EnderecoServiceTest {
 
     @Test
     public void test_recuperar_endereco_por_id() {
-    	
     	  endereco.setId(idEndereco);
 
           given(enderecoRepositoryMocked.getById(idEndereco)).willReturn(Optional.of(endereco));

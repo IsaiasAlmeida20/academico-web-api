@@ -1,7 +1,7 @@
 package br.com.academico.endereco;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
@@ -105,29 +105,29 @@ public class EnderecoResourceTest extends JerseyTest {
     @Test
     public void teste_criar_endereco() {
     	
-         endereco.setId(idEndereco);
-         
-         given(enderecoServiceMocked.criar(endereco)).willReturn(idEndereco);
+        endereco.setId(idEndereco);
+        
+        given(enderecoServiceMocked.criar(endereco)).willReturn(idEndereco);
 
-         Response response = target("/enderecos").request().post(Entity.json(endereco));
+        Response response = target("/enderecos").request().post(Entity.json(endereco));
 
-         Endereco enderecoSalvo = response.readEntity(new GenericType<Endereco>() {});
+        Endereco enderecoSalvo = response.readEntity(new GenericType<Endereco>() {});
 
-         assertThat(response.getStatus())
-             .withFailMessage("O codigo de status HTTP da resposta deve ser 201")
-             .isEqualTo(Status.CREATED.getStatusCode());  
+        assertThat(response.getStatus())
+            .withFailMessage("O codigo de status HTTP da resposta deve ser 201")
+            .isEqualTo(Status.CREATED.getStatusCode());  
 
-         assertThat(response.getHeaderString(HttpHeaders.CONTENT_TYPE))
-             .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser JSON")
-             .isEqualTo(MediaType.APPLICATION_JSON);
+        assertThat(response.getHeaderString(HttpHeaders.CONTENT_TYPE))
+            .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser JSON")
+            .isEqualTo(MediaType.APPLICATION_JSON);
 
-         assertThat(enderecoSalvo)
-             .withFailMessage("O endereço salvo não pode ser nullo")
-             .isNotNull();   
+        assertThat(enderecoSalvo)
+            .withFailMessage("O endereço salvo não pode ser nullo")
+            .isNotNull();   
 
-         assertThat(enderecoSalvo)
-             .withFailMessage("O conteúdo da resposta deve ser um objeto do tipo Endereço")
-             .isInstanceOf(Endereco.class);
+        assertThat(enderecoSalvo)
+            .withFailMessage("O conteúdo da resposta deve ser um objeto do tipo Endereço")
+            .isInstanceOf(Endereco.class);
          
     }
 

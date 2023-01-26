@@ -2,53 +2,57 @@ package br.com.academico.sala;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.jvnet.hk2.annotations.Service;
 
 @Service
-@Named("salaservicedefaut")
+@Named("salaservicedefault")
 public class SalaService implements ISalaService{
+
+    private ISalaRepository salaRepository;
+
+    @Inject
+    public SalaService(@Named("salarepositoryJPA") ISalaRepository salaRepository) {
+        this.salaRepository = salaRepository;
+    }
     
     public List<Sala> listar() {
-        List<Sala> listSalas = new ArrayList<Sala>();
-        listSalas.add(new Sala(1, 30, true, true, false));
-        listSalas.add(new Sala(2, 30, true, true, true));
-        return listSalas;
+        return salaRepository.findAll();
     }
 
     public Sala recuperar(Long id) {
-        Sala sala;
-        if(id != 999L) {
-            sala = new Sala(1, 30, true, true, false);
-            sala.setId(id);
-        }else {
-            throw new SalaNaoExisteException();
-        }
-        return sala;
+        return salaRepository.getById(id)
+            .orElseThrow(() -> new SalaNaoExisteException());
     }
 
     public Long criar(Sala sala) {
-        if(sala.getNumeroSala() != 300) {
-            sala.setId(200L);
-        }else {
-            throw new NumeroSalaInvalidoException();
-        }
+        salaRepository.save(sala);
         return sala.getId();
     }
 
     public Sala atualizar(Long id, Sala sala) {
-        if(id != 999L) {
-            sala.setId(id);
-            sala.setCapacidadeAlunos(35);
-        }else {
-            throw new SalaNaoExisteException();
-        }
-        return sala;
+        return salaRepository.getById(id).map(s -> {
+            s.setCapacidadeAlunos(sala.getCapacidadeAlunos());
+            s.setNumeroSala(sala.getNumeroSala());
+            s.setLaboratorio(sala.isLaboratorio());
+            s.setPossuiArcondicionado(sala.isPossuiArcondicionado());
+            s.setQuadroBranco(sala.isQuadroBranco());
+            salaRepository.update(s);
+            return s;
+        }).orElseThrow(() -> new SalaNaoExisteException());
     }
 
     public Long deletar(Long id) {
-        return id;
+        Optional<Sala> sala = salaRepository.getById(id);
+        if(sala.isPresent()) {
+            salaRepository.delete(sala.get().getId());
+            return sala.get().getId();
+        }else {
+            throw new SalaNaoExisteException();
+        }
     }
 }

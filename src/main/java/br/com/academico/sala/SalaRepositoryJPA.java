@@ -11,7 +11,7 @@ import org.jvnet.hk2.annotations.Service;
 import jakarta.persistence.EntityManager;
 
 @Service
-@Named("SalarepositoryJPA")
+@Named("salarepositoryJPA")
 public class SalaRepositoryJPA implements ISalaRepository {
 	
 	private EntityManager em;
