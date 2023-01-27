@@ -49,7 +49,7 @@ public class SalaRepositoryTest {
 	}
 	
     @Test
-    public void teste_getById_salas(){
+    public void teste_getById_nota(){
 
         salaRepositoryJPA.save(sala);
         
@@ -64,7 +64,7 @@ public class SalaRepositoryTest {
             .isInstanceOf(Sala.class);
 
         assertThat(salaRecuperado.get().getId())
-            .withFailMessage("O endereço recuperado deve ter o mesmo ID do endereço recuperado")
+            .withFailMessage("A sala recuperada deve ter o mesmo ID da sala recuperada")
             .isEqualTo(sala.getId());    
         
     }

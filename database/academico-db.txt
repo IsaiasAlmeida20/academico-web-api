@@ -113,3 +113,21 @@ CREATE INDEX fki_matricula_aluno_fkey
   ON public.notas
   USING btree
   (matricula_aluno)    
+
+CREATE SEQUENCE public.salas_id_seq
+    INCREMENT 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    START 1
+    CACHE 1;
+
+CREATE TABLE IF NOT EXISTS public.salas
+(
+    id integer NOT NULL DEFAULT nextval('salas_id_seq'::regclass),
+    numero_sala integer NOT NULL,
+    capacidade_alunos integer NOT NULL,
+    possui_arcondicionado boolean NOT NULL,
+    quadro_branco boolean NOT NULL,
+    laboratorio boolean NOT NULL,
+    CONSTRAINT salas_pkey PRIMARY KEY (id)
+)

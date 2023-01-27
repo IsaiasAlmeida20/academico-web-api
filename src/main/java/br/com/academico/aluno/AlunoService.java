@@ -7,7 +7,7 @@ import javax.inject.Named;
 
 import org.jvnet.hk2.annotations.Service;
 
-import br.com.academico.endereco.Endereco;
+import br.com.academico.nota.Nota;
 
 @Service
 @Named("alunoservicedefaut")
@@ -16,26 +16,6 @@ public class AlunoService implements IAlunoService{
     public List<Aluno> listar() {
 
         List<Aluno> listAlunos = new ArrayList<Aluno>();
-
-        Aluno a1 = new Aluno("Isaias", "Almeida", 24, "SE", 'M', "999.999.999-99", "Informatica", true);
-        Aluno a2 = new Aluno("Joãozinho", "petorto", 20, "SE", 'M', "999.999.999-88", "Informatica", true);
-        a1.setEndereco(new Endereco(49300000L, "Rua A", "Centro", "Tobias", "SE"));
-        a2.setEndereco(new Endereco(49400000L, "Rua B", "Centro", "Lagarto", "BA"));
-        listAlunos.add(a2);
-        listAlunos.add(a1);
-        Nota n1 = new Nota(8, 1);
-        Nota n2 = new Nota(10, 1);
-        Nota n3 = new Nota(9, 1);
-        List<Nota> notas = new ArrayList<Nota>();
-        notas.add(n1);
-        notas.add(n2);
-        notas.add(n3);
-        a1.setNotas(notas);
-        a2.setNotas(notas);
-        a1.calcularMediaAritimetica();
-        a1.calcularMediaPonderada();
-        a2.calcularMediaAritimetica();
-        a2.calcularMediaPonderada();
 
         return listAlunos;
         
@@ -77,13 +57,9 @@ public class AlunoService implements IAlunoService{
 
     public List<Nota> listarNotas(int matricula) {
 
-        Nota n1 = new Nota(8, 1);
-        Nota n2 = new Nota(10, 1);
-        Nota n3 = new Nota(9, 1);
+        
         List<Nota> notas = new ArrayList<Nota>();
-        notas.add(n1);
-        notas.add(n2);
-        notas.add(n3);
+       
 
         return notas;
     }

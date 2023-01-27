@@ -1,4 +1,4 @@
-package br.com.academico.sala;
+package br.com.academico.nota;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.*;
@@ -25,43 +25,44 @@ import org.junit.Test;
 
 import br.com.academico.exception.AcademicoExceptionMapper;
 
-public class SalaResourceTest extends JerseyTest{
+public class NotaResourceTest extends JerseyTest{
 
-    private ISalaService salaServiceMocked;
+    private INotaService notaServiceMocked;
 
-    private Sala sala;
+    private Nota nota;
 
-    private Long idSala;
+    private Long idNota;
 
     @Before
     public void init() {
-        sala = new Sala(1, 30, true,true, false);
-        idSala = 1L;
+        nota = new Nota(8.0, 2);
+		nota.setMatricula(20239999L);
+        idNota = 1L;
     }
     
     @Override
 	protected Application configure() {
-        salaServiceMocked = mock(ISalaService.class);
+        notaServiceMocked = mock(INotaService.class);
 		enable(TestProperties.LOG_TRAFFIC);
 		enable(TestProperties.DUMP_ENTITY);
 		return new ResourceConfig()
             .property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, SalaResource.class)
             .register(AcademicoExceptionMapper.class)
-            .register(new SalaResource(salaServiceMocked));
+            .register(new SalaResource(notaServiceMocked));
 	}
 
     @Test
-    public void teste_recuperar_lista_salas() {
+    public void teste_recuperar_lista_notas() {
     
-        List<Sala> listSalaEsperada;
-        listSalaEsperada = new ArrayList<Sala>();
-        listSalaEsperada.add(sala);
-        listSalaEsperada.add(sala);
+        List<Nota> listNotaEsperada;
+        listNotaEsperada = new ArrayList<Nota>();
+        listNotaEsperada.add(nota);
+        listNotaEsperada.add(nota);
 
-        given(salaServiceMocked.listar()).willReturn(listSalaEsperada);
+        given(notaServiceMocked.listar()).willReturn(listNotaEsperada);
 
-        Response response = target("/salas").request().get();
-        List<Sala> listSalaResposta = response.readEntity(new GenericType<List<Sala>>() {});
+        Response response = target("/notas").request().get();
+        List<Nota> listNotaResposta = response.readEntity(new GenericType<List<Nota>>() {});
 
         assertThat(response.getStatus())
             .withFailMessage("O codigo de status HTTP da resposta deve ser 200")
@@ -71,23 +72,23 @@ public class SalaResourceTest extends JerseyTest{
             .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser JSON")
             .isEqualTo(MediaType.APPLICATION_JSON);
 
-        assertThat(listSalaResposta)
+        assertThat(listNotaResposta)
             .withFailMessage("As Listas devem ter o mesmo tamanho")
-            .hasSameSizeAs(listSalaEsperada);
+            .hasSameSizeAs(listNotaEsperada);
     }
     
     @Test
-    public void test_recuperar_sala_por_id() {
+    public void test_recuperar_nota_por_id() {
 
-        sala.setId(idSala);
+        nota.setId(idNota);
        
-        given(salaServiceMocked.recuperar(idSala)).willReturn(sala);
+        given(notaServiceMocked.recuperar(idNota)).willReturn(nota);
 
-        Response response = target("/salas/{id}")
-            .resolveTemplate("id", idSala)
+        Response response = target("/notas/{id}")
+            .resolveTemplate("id", idNota)
             .request().get();
 
-        Sala salaResposta = response.readEntity(new GenericType<Sala>() {});
+            Nota notaResposta = response.readEntity(new GenericType<Nota>() {});
  
         assertThat(response.getStatus())
              .withFailMessage("O codigo de status HTTP da resposta deve ser 200")
@@ -97,20 +98,20 @@ public class SalaResourceTest extends JerseyTest{
              .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser JSON")
              .isEqualTo(MediaType.APPLICATION_JSON);
  
-        assertThat(salaResposta)
-             .withFailMessage("O conteúdo da resposta deve ser um objeto do tipo Sala")
-             .isInstanceOf(Sala.class);
+        assertThat(notaResposta)
+             .withFailMessage("O conteúdo da resposta deve ser um objeto do tipo Nota")
+             .isInstanceOf(Nota.class);
     }
 
     @Test
     public void teste_criar_sala() {
-        sala.setId(idSala);
+        nota.setId(idNota);
         
-        given(salaServiceMocked.criar(sala)).willReturn(idSala);
+        given(notaServiceMocked.criar(nota)).willReturn(idNota);
 
-        Response response = target("/salas").request().post(Entity.json(sala));
+        Response response = target("/notas").request().post(Entity.json(nota));
 
-        Sala salaSalva = response.readEntity(new GenericType<Sala>() {});
+        Nota notaSalva = response.readEntity(new GenericType<Nota>() {});
 
         assertThat(response.getStatus())
             .withFailMessage("O codigo de status HTTP da resposta deve ser 201")
@@ -120,25 +121,25 @@ public class SalaResourceTest extends JerseyTest{
             .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser JSON")
             .isEqualTo(MediaType.APPLICATION_JSON);
 
-        assertThat(salaSalva)
-            .withFailMessage("A Sala salvo não pode ser nulla")
+        assertThat(notaSalva)
+            .withFailMessage("A nota salva não pode ser nulla")
             .isNotNull();   
 
-        assertThat(salaSalva)
-            .withFailMessage("O conteúdo da resposta deve ser um objeto do tipo Sala")
-            .isInstanceOf(Sala.class);
+        assertThat(notaSalva)
+            .withFailMessage("O conteúdo da resposta deve ser um objeto do tipo Nota")
+            .isInstanceOf(Nota.class);
     }
 
     @Test
     public void teste_atualizar_sala_por_id() {
-        sala.setId(idSala);
+        nota.setId(idNota);
          
-        given(salaServiceMocked.atualizar(idSala, sala)).willReturn(sala);
+        given(notaServiceMocked.atualizar(idNota, nota)).willReturn(nota);
 
-        Response response = target("/salas/{id}")
-            .resolveTemplate("id", idSala)
+        Response response = target("/notas/{id}")
+            .resolveTemplate("id", idNota)
             .request()
-            .put(Entity.json(sala));
+            .put(Entity.json(nota));
 
         assertThat(response.getStatus())
             .withFailMessage("codigo de status HTTP da resposta deve ser 204")
@@ -148,10 +149,10 @@ public class SalaResourceTest extends JerseyTest{
 
     @Test
     public void teste_deletar_sala_por_id() {
-        given(salaServiceMocked.deletar(idSala)).willReturn(idSala);
+        given(notaServiceMocked.deletar(idNota)).willReturn(idNota);
 
-        Response response = target("/salas/{id}")
-            .resolveTemplate("id", idSala)
+        Response response = target("/notas/{id}")
+            .resolveTemplate("id", idNota)
             .request()
             .delete();
         

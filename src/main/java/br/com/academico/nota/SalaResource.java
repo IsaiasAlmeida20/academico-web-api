@@ -1,4 +1,4 @@
-package br.com.academico.aluno;
+package br.com.academico.nota;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,29 +16,31 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import br.com.academico.nota.Nota;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Path("/notas")
+@Tag(name = "Nota")
+public class SalaResource {
 
-@Path("/alunos")
-@Tag(name = "Aluno")
-public class AlunoResource {
-
+    private INotaService notaService;
+    
     @Inject
-    @Named("alunoservicedefaut")
-    private IAlunoService alunoService;
+    
+    public SalaResource(@Named("notaservicedefault") INotaService notaService) {
+        this.notaService = notaService;
+    } 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
-        summary = "Listar Alunos",
-        description = "Recupera uma lista completa de alunos com todos os dados"
+        summary = "Listar Notas",
+        description = "Recupera uma lista completa de Notas com todos os dados"
     )
     public Response recuperar() {
-        List<Aluno> listAlunos = new ArrayList<Aluno>();
+        List<Nota> listNotas = new ArrayList<Nota>();
         try {
-            listAlunos = alunoService.listar();
+            listNotas = notaService.listar();
         } catch (Exception e) {
             return Response
                 .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -46,20 +48,20 @@ public class AlunoResource {
                 .type("text/plain")
                 .build();
         }
-        return Response.ok(listAlunos, MediaType.APPLICATION_JSON).build();
+        return Response.ok(listNotas, MediaType.APPLICATION_JSON).build();
     }
 
     @GET
-    @Path("/{matricula}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
-        summary = "Recuperar Aluno",
-        description = "Recupera apenas um aluno a partir do sua matricula"
+        summary = "Recuperar Nota",
+        description = "Recupera apenas uma Nota a partir do seu id"
     )
-    public Response recuperarMatricula(@PathParam("matricula") int matricula) {
-        Aluno aluno;
+    public Response recuperarId(@PathParam("id") Long id) {
+        Nota nota;
         try {
-            aluno = alunoService.recuperar(matricula);
+            nota = notaService.recuperar(id);
         } catch (Exception e) {
             return Response
                 .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -67,21 +69,21 @@ public class AlunoResource {
                 .type("text/plain")
                 .build();
         }
-        return Response.ok(aluno, MediaType.APPLICATION_JSON).build();
+        return Response.ok(nota, MediaType.APPLICATION_JSON).build();
     }
 
-	@POST
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(
-        summary = "Criar Aluno",
-        description = "Cria um aluno completo"
+        summary = "Criar Nota",
+        description = "Cria um Nota"
     )
-    public Response inserir(Aluno aluno) {
-		 @SuppressWarnings("unused")
-        int matricula;
+    public Response inserir(Nota nota) {
+        Long id;
         try {
-            matricula = alunoService.criar(aluno);
+            id = notaService.criar(nota);
+            nota.setId(id);
         } catch (Exception e) {
             return Response
                 .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -91,20 +93,20 @@ public class AlunoResource {
         }
         return Response
                     .status(Response.Status.CREATED)
-                    .entity(aluno)
+                    .entity(nota)
                     .build();
     }
 
     @PUT
-    @Path("/{matricula}")
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(
-        summary = "Atualiza um aluno",
-        description = "Atualiza um aluno"
+        summary = "Atualiza um nota",
+        description = "Atualiza um nota"
     )
-    public Response atualizar(@PathParam("matricula") int matricula, Aluno aluno) {
+    public Response atualizar(@PathParam("id") Long id, Nota nota) {
         try {
-            aluno = alunoService.atualizar(matricula, aluno);
+            nota = notaService.atualizar(id, nota);
         } catch (Exception e) {
             return Response
                 .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -118,14 +120,14 @@ public class AlunoResource {
     }
 
     @DELETE
-    @Path("/{matricula}")
+    @Path("/{id}")
     @Operation(
-        summary = "Deletar aluno",
-        description = "Deleta apenas um aluno a partir do sua matricula"
+        summary = "Deletar Nota",
+        description = "Deleta apenas uma nota a partir do seu id"
     )
-    public Response deletar(@PathParam("matricula") int matricula) {
+    public Response deletar(@PathParam("id") Long id) {
         try {
-            alunoService.deletar(matricula);
+            notaService.deletar(id);
         } catch (Exception e) {
             return Response
                 .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -136,28 +138,5 @@ public class AlunoResource {
         return Response
                     .status(Response.Status.NO_CONTENT)
                     .build();
-    }
-
-
-    @GET
-    @Produces
-    @Path("{matricula}/notas")
-    @Operation(
-        summary = "Lista Notas",
-        description = "Recupera uma lista com todas as notas do aluno"
-    )
-    public Response recuperarNotasPorMatricula(@PathParam("matricula") int matricula) {
-        List<Nota> notas = new ArrayList<Nota>();
-        try {
-            alunoService.listarNotas(matricula);
-        } catch (Exception e) {
-            return Response
-                .status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(e.getMessage())
-                .type("text/plain")
-                .build();
-        }
-
-        return Response.ok(notas).build();
     }
 }

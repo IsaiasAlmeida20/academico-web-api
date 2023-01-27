@@ -9,7 +9,7 @@
 GET Http://{{path}}:{{port}}/{{pathproject}}/enderecos
 
 ### Busca um endereco especifico por ID
-GET Http://{{path}}:{{port}}/{{pathproject}}/enderecos/88
+GET Http://{{path}}:{{port}}/{{pathproject}}/enderecos/1
 
 ### Cria um endereco
 POST Http://{{path}}:{{port}}/{{pathproject}}/enderecos
@@ -24,7 +24,7 @@ Content-Type: application/json
 },
 
 ### Atualiza um endereco
-PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos/88
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos/5
 Content-Type: application/json
 
 {
@@ -37,10 +37,10 @@ Content-Type: application/json
 
 
 ### Deletar um endereco por ID
-DELETE Http://{{path}}:{{port}}/{{pathproject}}/enderecos/88
+DELETE Http://{{path}}:{{port}}/{{pathproject}}/enderecos/5
 
 ### Atualizar Status do endereco(ATIVADO/DESATIVADO)
-PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos/89/status
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos/3/status
 Content-Type: text/plain
 
 DESATIVO

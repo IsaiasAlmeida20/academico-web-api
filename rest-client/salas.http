@@ -9,7 +9,7 @@
 GET Http://{{path}}:{{port}}/{{pathproject}}/salas
 
 ### Busca um sala especifico por ID
-GET Http://{{path}}:{{port}}/{{pathproject}}/salas/56
+GET Http://{{path}}:{{port}}/{{pathproject}}/salas/9
 
 ### Cria uma sala
 POST Http://{{path}}:{{port}}/{{pathproject}}/salas
@@ -24,7 +24,7 @@ Content-Type: application/json
 }
 
 ### Atualiza uma sala
-PUT  Http://{{path}}:{{port}}/{{pathproject}}/salas/56
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/salas/9
 Content-Type: application/json
 
 {
@@ -38,4 +38,4 @@ Content-Type: application/json
 
 
 ### Deletar uma sala por ID
-DELETE Http://{{path}}:{{port}}/{{pathproject}}/salas/56
+DELETE Http://{{path}}:{{port}}/{{pathproject}}/salas/9

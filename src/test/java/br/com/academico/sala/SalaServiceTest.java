@@ -46,7 +46,7 @@ public class SalaServiceTest {
             .isInstanceOf(List.class);
 
         assertThat(listSalaResposta)
-            .withFailMessage("O retorno do método listar deve ser uma lista de endereços não nulla")
+            .withFailMessage("O retorno do método listar deve ser uma lista de salas não nulla")
             .isNotNull();
 
         assertThat(listSalaResposta.size())

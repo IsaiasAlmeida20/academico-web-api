@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import br.com.academico.evento.IEvento;
+import br.com.academico.nota.Nota;
 import br.com.academico.pessoa.Pessoa;
 import br.com.academico.projeto.IProjeto;
 
