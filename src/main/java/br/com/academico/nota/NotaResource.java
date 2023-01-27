@@ -21,13 +21,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Path("/notas")
 @Tag(name = "Nota")
-public class SalaResource {
+public class NotaResource {
 
     private INotaService notaService;
     
     @Inject
     
-    public SalaResource(@Named("notaservicedefault") INotaService notaService) {
+    public NotaResource(@Named("notaservicedefault") INotaService notaService) {
         this.notaService = notaService;
     } 
 

@@ -46,9 +46,9 @@ public class NotaResourceTest extends JerseyTest{
 		enable(TestProperties.LOG_TRAFFIC);
 		enable(TestProperties.DUMP_ENTITY);
 		return new ResourceConfig()
-            .property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, SalaResource.class)
+            .property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, NotaResource.class)
             .register(AcademicoExceptionMapper.class)
-            .register(new SalaResource(notaServiceMocked));
+            .register(new NotaResource(notaServiceMocked));
 	}
 
     @Test

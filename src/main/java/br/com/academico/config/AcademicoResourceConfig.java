@@ -10,8 +10,10 @@ import br.com.academico.disciplina.DisciplinaResource;
 import br.com.academico.endereco.EnderecoResource;
 
 import br.com.academico.exception.AcademicoExceptionMapper;
+import br.com.academico.nota.NotaResource;
 import br.com.academico.professor.ProfessorResource;
 import br.com.academico.sala.SalaResource;
+import br.com.academico.turma.TurmaResource;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -47,6 +49,8 @@ public class AcademicoResourceConfig extends ResourceConfig {
         register(DisciplinaResource.class);
         register(AlunoResource.class);
         register(ProfessorResource.class);
+        register(NotaResource.class);
+        register(TurmaResource.class);
     }
     
     private void configurarSwagger() {
