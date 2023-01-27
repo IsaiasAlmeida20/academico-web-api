@@ -8,8 +8,8 @@ import org.jvnet.hk2.annotations.Contract;
 public interface IDisciplinaService {
     
     public List<Disciplina> listar();
-    public Disciplina recuperar(int id);
-    public int criar(Disciplina disciplina);
-    public Disciplina atualizar(int id, Disciplina disciplina);
-    public int deletar(int id);
+    public Disciplina recuperar(Long id);
+    public Long criar(Disciplina disciplina);
+    public Disciplina atualizar(Long id, Disciplina disciplina);
+    public Long deletar(Long id);
 }

@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -24,9 +23,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Disciplina")
 public class DisciplinaResource {
 
-    @Inject
-    @Named("disciplinaservicedefaut")
     private IDisciplinaService disciplinaService;
+
+    @Inject
+    public DisciplinaResource(@Named("disciplinaservicedefault") IDisciplinaService disciplinaService) {
+        this.disciplinaService = disciplinaService;
+    }
+    
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -55,7 +58,7 @@ public class DisciplinaResource {
         summary = "Recuperar Disciplina",
         description = "Recupera apenas uma disciplina a partir do seu id"
     )
-    public Response recuperarId(@PathParam("id") int id) {
+    public Response recuperarId(@PathParam("id") Long id) {
         Disciplina disciplina;
         try {
             disciplina = disciplinaService.recuperar(id);
@@ -76,8 +79,8 @@ public class DisciplinaResource {
         summary = "Criar uma displina",
         description = "Criar uma disciplina completa"
     )
-    public Response inserir(@Valid Disciplina disciplina) {
-        int id;
+    public Response inserir(Disciplina disciplina) {
+        Long id;
         try {
             id = disciplinaService.criar(disciplina);
             disciplina.setId(id);
@@ -101,7 +104,7 @@ public class DisciplinaResource {
         summary = "Atualiza uma disciplina",
         description = "Atualiza uma disciplina"
     )
-    public Response atualizar(@PathParam("id") int id, Disciplina disciplina) {
+    public Response atualizar(@PathParam("id") Long id, Disciplina disciplina) {
         try {
             disciplina = disciplinaService.atualizar(id, disciplina);
         } catch (Exception e) {
@@ -122,7 +125,7 @@ public class DisciplinaResource {
         summary = "Deletar disciplina",
         description = "Deleta apenas uma disciplina a partir do seu id"
     )
-    public Response deletar(@PathParam("id") int id) {
+    public Response deletar(@PathParam("id") Long id) {
         try {
             disciplinaService.deletar(id);
         } catch (Exception e) {

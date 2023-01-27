@@ -24,7 +24,7 @@ Content-Type: application/json
 },
 
 ### Atualiza um endereco
-PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos/5
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos/3
 Content-Type: application/json
 
 {
@@ -37,7 +37,7 @@ Content-Type: application/json
 
 
 ### Deletar um endereco por ID
-DELETE Http://{{path}}:{{port}}/{{pathproject}}/enderecos/5
+DELETE Http://{{path}}:{{port}}/{{pathproject}}/enderecos/8
 
 ### Atualizar Status do endereco(ATIVADO/DESATIVADO)
 PUT  Http://{{path}}:{{port}}/{{pathproject}}/enderecos/3/status

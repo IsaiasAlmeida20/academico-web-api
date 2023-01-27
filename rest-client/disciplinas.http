@@ -17,11 +17,11 @@ Content-Type: application/json
 
   {
     "cargaHoraria": 86,
-    "nomeDisciplina": "Cs2"
+    "nomeDisciplina": "Programação"
   },
 
 ### Atualiza uma disciplina
-PUT  Http://{{path}}:{{port}}/{{pathproject}}/disciplinas/10
+PUT  Http://{{path}}:{{port}}/{{pathproject}}/disciplinas/5
 Content-Type: application/json
 
   {
@@ -31,4 +31,4 @@ Content-Type: application/json
 
 
 ### Deletar uma disciplina por ID
-DELETE Http://{{path}}:{{port}}/{{pathproject}}/disciplinas/3
+DELETE Http://{{path}}:{{port}}/{{pathproject}}/disciplinas/5

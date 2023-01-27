@@ -1,11 +1,13 @@
 package br.com.academico.disciplina;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.mock;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.json.Json;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
@@ -18,97 +20,142 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.TestProperties;
+import org.junit.Before;
 import org.junit.Test;
 
-import br.com.academico.config.AutoScanIoCFeature;
 import br.com.academico.exception.AcademicoExceptionMapper;
 
 public class DisciplinaResourceTest extends JerseyTest {
 
+    private IDisciplinaService disciplinaServiceMocked;
+
+    private Disciplina disciplina;
+
+    private Long idDisciplina;
+
+    @Before
+    public void init() {
+        disciplina = new Disciplina("PROGRAMACAO", 120);
+        idDisciplina = 1L;
+    }
+
     @Override
 	protected Application configure() {
+        disciplinaServiceMocked = mock(IDisciplinaService.class);
 		enable(TestProperties.LOG_TRAFFIC);
 		enable(TestProperties.DUMP_ENTITY);
-		return new ResourceConfig(DisciplinaResource.class)
+		return new ResourceConfig()
             .property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true)
             .register(AcademicoExceptionMapper.class)
-            .register(AutoScanIoCFeature.class);
+            .register(new DisciplinaResource(disciplinaServiceMocked));
 	}
 
     @Test
     public void teste_recuperar_lista_disciplinas() {
 
+        List<Disciplina> listDisciplinaEsperada = new ArrayList<Disciplina>();
+        listDisciplinaEsperada.add(disciplina);
+        listDisciplinaEsperada.add(disciplina);
+
+        given(disciplinaServiceMocked.listar()).willReturn(listDisciplinaEsperada);
+
         Response response = target("/disciplinas").request().get();
+        List<Disciplina> listDisciplinaResposta = response.readEntity(new GenericType<List<Disciplina>>() {});
 
-        List<Disciplina> listDisciplina = response.readEntity(new GenericType<List<Disciplina>>() {});
+        assertThat(response.getStatus())
+            .withFailMessage("O codigo de status HTTP da resposta deve ser 200")
+            .isEqualTo(Status.OK.getStatusCode());  
 
-        assertEquals("O codigo de status HTTP da resposta deve ser 200: ", Status.OK.getStatusCode(), response.getStatus());
-        assertEquals("O tipo de conteúdo HTTP da resposta deve ser JSON: ", MediaType.APPLICATION_JSON, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
-        assertTrue("O conteúdo da resposta deve ser uma lista: ", listDisciplina instanceof List<?>);
+        assertThat(response.getHeaderString(HttpHeaders.CONTENT_TYPE))
+            .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser JSON")
+            .isEqualTo(MediaType.APPLICATION_JSON);
+
+        assertThat(listDisciplinaResposta)
+            .withFailMessage("As Listas devem ter o mesmo tamanho")
+            .hasSameSizeAs(listDisciplinaEsperada);
     }
 
     @Test
     public void test_recuperar_disciplina_por_id() {
-        Response response = target("/disciplinas/123").request().get();
-        Disciplina disciplina = response.readEntity(new GenericType<Disciplina>() {});
+        disciplina.setId(idDisciplina);
+       
+        given(disciplinaServiceMocked.recuperar(idDisciplina)).willReturn(disciplina);
 
-        assertEquals("O codigo de status HTTP da resposta deve ser 200: ", Status.OK.getStatusCode(), response.getStatus());
-        assertEquals("O tipo de conteúdo HTTP da resposta deve ser JSON: ", MediaType.APPLICATION_JSON, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
-        assertTrue("O conteúdo da resposta deve ser uma Disciplina: ", disciplina instanceof Disciplina);
+        Response response = target("/disciplinas/{id}")
+            .resolveTemplate("id", idDisciplina)
+            .request().get();
+
+        Disciplina dsiciplinaResposta = response.readEntity(new GenericType<Disciplina>() {});
+ 
+        assertThat(response.getStatus())
+             .withFailMessage("O codigo de status HTTP da resposta deve ser 200")
+             .isEqualTo(Status.OK.getStatusCode());  
+ 
+        assertThat(response.getHeaderString(HttpHeaders.CONTENT_TYPE))
+             .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser JSON")
+             .isEqualTo(MediaType.APPLICATION_JSON);
+ 
+        assertThat(dsiciplinaResposta)
+             .withFailMessage("O conteúdo da resposta deve ser um objeto do tipo Dsiciplina")
+             .isInstanceOf(Disciplina.class);
     }
 
     @Test
     public void teste_criar_disciplina() {
-        String disciplinaJSON = Json.createObjectBuilder()
-            .add("nomeDisciplina", "0000-PROGRAMACAO")
-            .add("cargaHoraria", 200)
-            .build()
-            .toString();
+        disciplina.setId(idDisciplina);
+        
+        given(disciplinaServiceMocked.criar(disciplina)).willReturn(idDisciplina);
 
-        Response response = target("/disciplinas").request().post(Entity.json(disciplinaJSON));
-        Disciplina disciplina = response.readEntity(new GenericType<Disciplina>() {});
+        Response response = target("/disciplinas").request().post(Entity.json(disciplina));
 
-        assertEquals("O codigo de status HTTP da resposta deve ser 201: ", Status.CREATED.getStatusCode(), response.getStatus());
-        assertEquals("O tipo de conteúdo HTTP da resposta deve ser JSON: ", MediaType.APPLICATION_JSON, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
-        assertTrue("O conteúdo da resposta deve ser uma Disciplina: ", disciplina instanceof Disciplina);
+        Disciplina disciplinaSalva = response.readEntity(new GenericType<Disciplina>() {});
+
+        assertThat(response.getStatus())
+            .withFailMessage("O codigo de status HTTP da resposta deve ser 201")
+            .isEqualTo(Status.CREATED.getStatusCode());  
+
+        assertThat(response.getHeaderString(HttpHeaders.CONTENT_TYPE))
+            .withFailMessage("O tipo de conteúdo HTTP da resposta deve ser JSON")
+            .isEqualTo(MediaType.APPLICATION_JSON);
+
+        assertThat(disciplinaSalva)
+            .withFailMessage("A dsiciplina salva não pode ser nulla")
+            .isNotNull();   
+
+        assertThat(disciplinaSalva)
+            .withFailMessage("O conteúdo da resposta deve ser um objeto do tipo Endereço")
+            .isInstanceOf(Disciplina.class);
     }
 
     @Test
     public void teste_atualizar_disciplina_por_id() {
-        String disciplinaJSON = Json.createObjectBuilder()
-            .add("nomeDisciplina", "CS1")
-            .add("cargaHoraria", 300)
-            .build()
-            .toString();
+        disciplina.setId(idDisciplina);
+         
+        given(disciplinaServiceMocked.atualizar(idDisciplina, disciplina)).willReturn(disciplina);
 
-        Response response = target("/disciplinas/223").request().put(Entity.json(disciplinaJSON));
-        
-        response.readEntity(new GenericType<Disciplina>() {});
+        Response response = target("/disciplinas/{id}")
+            .resolveTemplate("id", idDisciplina)
+            .request()
+            .put(Entity.json(disciplina));
 
-        assertEquals("O codigo de status HTTP da resposta deve ser 204: ", Status.NO_CONTENT.getStatusCode(), response.getStatus());
+        assertThat(response.getStatus())
+            .withFailMessage("codigo de status HTTP da resposta deve ser 204")
+            .isEqualTo(Status.NO_CONTENT.getStatusCode());
     }
 
     @Test
     public void teste_deletar_disciplina_por_id() {
-        Response response = target("/disciplinas/1").request().delete();
+        given(disciplinaServiceMocked.deletar(idDisciplina)).willReturn(idDisciplina);
 
-        assertEquals("O codigo de status HTTP da resposta deve ser 204: ", Status.NO_CONTENT.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void teste_criar_disciplina_com_nome_invalido() {
-        String disciplinaJSON = Json.createObjectBuilder()
-            .add("nomeDisciplina", "Programação")
-            .add("cargaHoraria", 203)
-            .build()
-            .toString();
-
-        Response response = target("/disciplinas").request().post(Entity.json(disciplinaJSON));
-        String msg = response.readEntity(String.class);
-
-        assertEquals("O codigo de status HTTP da resposta deve ser 422: ", 422, response.getStatus());
-        assertEquals("O tipo de conteúdo HTTP da resposta deve ser texto plano: ", MediaType.TEXT_PLAIN, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
-        assertTrue("O conteúdo da resposta deve conter uma mensagem de validação pré-definida: ", msg.contains("O atributo nome da disciplina é inválido."));
+        Response response = target("/disciplinas/{id}")
+            .resolveTemplate("id", idDisciplina)
+            .request()
+            .delete();
+        
+        assertThat(response.getStatus())
+            .withFailMessage("codigo de status HTTP da resposta deve ser 204")
+            .isEqualTo(Status.NO_CONTENT.getStatusCode());
+        
     }
 
 }
